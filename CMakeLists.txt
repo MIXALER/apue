@@ -1,3 +1,7 @@
-project(os)
+cmake_minimum_required(VERSION 3.17)
+project(learn_os)
 
-add_executable(db main.cpp BTree.h BTreeIndex.h DataBase.h Record.h)
+set(CMAKE_CXX_STANDARD 11)
+
+
+add_executable(db db.cpp)

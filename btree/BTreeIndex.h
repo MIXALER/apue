@@ -1,4 +1,3 @@
-#pragma once
 
 #include "BTree.h"
 #include "DataBase.h"
@@ -15,15 +14,15 @@ private:
 public:
 	BTreeIndex(int n);
 	~BTreeIndex();
-	//Ìí¼ÓÒ»¸ö¼ÇÂ¼²¢ÇÒ½«key¼ÓÈëË÷Òı¡£
+	//æ·»åŠ ä¸€ä¸ªè®°å½•å¹¶ä¸”å°†keyåŠ å…¥ç´¢å¼•ã€‚
 	void add(KeyType key, RecordType record);
-	//É¾³ıÖ¸¶¨keyµÄ¼ÇÂ¼¡£
+	//åˆ é™¤æŒ‡å®škeyçš„è®°å½•ã€‚
 	void del(KeyType key);
-	//²éÑ¯Ö¸¶¨keyµÄ¼ÇÂ¼¡£
+	//æŸ¥è¯¢æŒ‡å®škeyçš„è®°å½•ã€‚
 	void find(KeyType key ,RecordType & record);
-	//·µ»Ø³ÉÔ±±äÁ¿
+	//è¿”å›æˆå‘˜å˜é‡
 	DataBase<RecordType> * getDB();
-	//·µ»Ø³ÉÔ±±äÁ¿
+	//è¿”å›æˆå‘˜å˜é‡
 	BTree<KeyType, int> * getBTree();
 };
 
@@ -31,7 +30,7 @@ public:
 template <class KeyType, class RecordType>
 BTreeIndex<KeyType, RecordType>::BTreeIndex(int n) {
 	btree = new BTree<KeyType, int>(n);
-	db = new DataBase<RecordType>(string("dbFile"));
+	db = new DataBase<RecordType>(string("dbFile")); //todo: è¿™é‡Œæ•°æ®åº“é»˜è®¤"dbfile"æš‚æ—¶çš„è®¾è®¡
 }
 
 template <class KeyType, class RecordType>
@@ -42,44 +41,44 @@ BTreeIndex<KeyType, RecordType>::~BTreeIndex() {
 	db = NULL;
 }
 
-//Ìí¼ÓÒ»¸ö¼ÇÂ¼²¢ÇÒ½«key¼ÓÈëË÷Òı¡£
+//æ·»åŠ ä¸€ä¸ªè®°å½•å¹¶ä¸”å°†keyåŠ å…¥ç´¢å¼•ã€‚
 template <class KeyType, class RecordType>
 void BTreeIndex<KeyType, RecordType>::add(KeyType key, RecordType record) {
-	//Ôö¼ÓÊı¾İ£¬»ñµÃ¸ÃÊı¾İµÄµØÖ·¡£
+	//å¢åŠ æ•°æ®ï¼Œè·å¾—è¯¥æ•°æ®çš„åœ°å€ã€‚
 	int pos = db->save(record);
-	//½«(key->pos)¼ÓÈëË÷Òı¡£
+	//å°†(key->pos)åŠ å…¥ç´¢å¼•ã€‚
 	btree->add(key, pos);
 }
 
-//É¾³ıÖ¸¶¨keyµÄ¼ÇÂ¼¡£
+//åˆ é™¤æŒ‡å®škeyçš„è®°å½•ã€‚
 template <class KeyType, class RecordType>
 void BTreeIndex<KeyType, RecordType>::del(KeyType key) {
-	//¸ù¾İË÷ÒıÕÒµ½ÒªÉ¾³ıµÄ¼ÇÂ¼µÄÎ»ÖÃ¡£
+	//æ ¹æ®ç´¢å¼•æ‰¾åˆ°è¦åˆ é™¤çš„è®°å½•çš„ä½ç½®ã€‚
 	int pos = this->btree->getKeyValue(key);
-	//É¾³ıÊı¾İ¿âÎÄ¼şÖĞÖ¸¶¨Î»ÖÃµÄ¼ÇÂ¼¡£
+	//åˆ é™¤æ•°æ®åº“æ–‡ä»¶ä¸­æŒ‡å®šä½ç½®çš„è®°å½•ã€‚
 	this->db->remove(pos);
-	//É¾³ıË÷Òı¡£
+	//åˆ é™¤ç´¢å¼•ã€‚
 	this->btree->del(key);
 }
 
-//²éÑ¯Ö¸¶¨keyµÄ¼ÇÂ¼¡£
+//æŸ¥è¯¢æŒ‡å®škeyçš„è®°å½•ã€‚
 template <class KeyType, class RecordType>
 void BTreeIndex<KeyType, RecordType>::find(KeyType key, RecordType & record) {
-	//¸ù¾İË÷ÒıÕÒµ½Òª²éÑ¯µÄ¼ÇÂ¼µÄÎ»ÖÃ¡£
+	//æ ¹æ®ç´¢å¼•æ‰¾åˆ°è¦æŸ¥è¯¢çš„è®°å½•çš„ä½ç½®ã€‚
 	int pos = this->btree->getKeyValue(key);
 	if (pos != -1) {
-		//·µ»ØposÎ»ÖÃµÄ¼ÇÂ¼¡£
+		//è¿”å›posä½ç½®çš„è®°å½•ã€‚
 		record = this->db->getByOffset(pos);
 	}
 }
 
-//·µ»Ø³ÉÔ±±äÁ¿
+//è¿”å›æˆå‘˜å˜é‡
 template <class KeyType, class RecordType>
 DataBase<RecordType> * BTreeIndex<KeyType, RecordType>::getDB() {
 	return this->db;
 }
 
-//·µ»Ø³ÉÔ±±äÁ¿
+//è¿”å›æˆå‘˜å˜é‡
 template <class KeyType, class RecordType>
 BTree<KeyType, int> * BTreeIndex<KeyType, RecordType>::getBTree() {
 	return this->btree;

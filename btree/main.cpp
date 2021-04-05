@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <iostream>
 #include "BTreeIndex.h"
-#include "Record.h"
+//#include "Record.h"
 
 void printMenu();
 
 //function declares
-//¿ÉÒÔºöÂÔÁË£¬ÕâĞ©¶¼ÊÇ²âÊÔÓÃµÄ¡£ÇëÖ±½ÓÔËĞĞ³ÌĞò¾ÍºÃ¡£
+//å¯ä»¥å¿½ç•¥äº†ï¼Œè¿™äº›éƒ½æ˜¯æµ‹è¯•ç”¨çš„ã€‚è¯·ç›´æ¥è¿è¡Œç¨‹åºå°±å¥½ã€‚
 void t_empty();
 void t_1_to_10();
 void t_btree4();
@@ -23,33 +23,33 @@ int main()
 
 	DataBase<Record> db("dbFile");
 
-	//¶¨ÒåÒ»¸öBTreeË÷ÒıÊı¾İ±í¡£
+	//å®šä¹‰ä¸€ä¸ªBTreeç´¢å¼•æ•°æ®è¡¨ã€‚
 	BTreeIndex<int, Record> indexDB(3);
-	//Êı¾İ¼ÇÂ¼£¬ÓÃÓÚ´æ·ÅÊäÈëµÄÁÙÊ±Êı¾İ¡£
+	//æ•°æ®è®°å½•ï¼Œç”¨äºå­˜æ”¾è¾“å…¥çš„ä¸´æ—¶æ•°æ®ã€‚
 	Record record;
-	//ÓÃÓÚ´æ·ÅÊäÈëµÄÁÙÊ±Êı¾İ¡£
+	//ç”¨äºå­˜æ”¾è¾“å…¥çš„ä¸´æ—¶æ•°æ®ã€‚
 	int key;
-	//´òÓ¡ÃüÁî¡£
+	//æ‰“å°å‘½ä»¤ã€‚
 	printMenu();
-	//ÃüÁîºÅ
+	//å‘½ä»¤å·
 	int cmd = -1;
-	//½ÓÊÜÃüÁî¡£
+	//æ¥å—å‘½ä»¤ã€‚
 	while (cin >> cmd) {
 		switch (cmd)
 		{
-			//1:ĞÂÔöÊı¾İ ¸ñÊ½£¨key value£©
+			//1:æ–°å¢æ•°æ® æ ¼å¼ï¼ˆkey valueï¼‰
 		case 1:
 			cout << "please input key and value:";
 			cin >> record.key >> record.content;
 			indexDB.add(record.key, record);
 			break;
-			//2:É¾³ıÊı¾İ ¸ñÊ½£¨key£©
+			//2:åˆ é™¤æ•°æ® æ ¼å¼ï¼ˆkeyï¼‰
 		case 2:
 			cout << "please input key:";
 			cin >> key;
 			indexDB.del(key);
 			break;
-			//3:²éÑ¯Êı¾İ ¸ñÊ½£¨key£©
+			//3:æŸ¥è¯¢æ•°æ® æ ¼å¼ï¼ˆkeyï¼‰
 		case 3:
 			cout << "please input key:";
 			cin >> key;
@@ -59,10 +59,10 @@ int main()
 				cout << "Record[key=" << record.key << ",content=" << record.content << "]" << endl;
 			}
 			else {
-				cout << "Record with key=" << key << " is not found£¡" << endl;
+				cout << "Record with key=" << key << " is not foundï¼" << endl;
 			}
 			break;
-			//4:´òÓ¡BÊ÷Ë÷Òı" << endl;
+			//4:æ‰“å°Bæ ‘ç´¢å¼•" << endl;
 		case 4:
 			indexDB.getBTree()->print();
 			break;
@@ -79,14 +79,14 @@ int main()
 }
 
 
-//´òÓ¡¹¦ÄÜ²Ëµ¥
+//æ‰“å°åŠŸèƒ½èœå•
 void printMenu() {
 	cout << endl;
-	cout << "1:ĞÂÔöÊı¾İ ¸ñÊ½£¨key value£©;" << endl;
-	cout << "2:É¾³ıÊı¾İ ¸ñÊ½£¨key£©;" << endl;
-	cout << "3:²éÑ¯Êı¾İ ¸ñÊ½£¨key£©;" << endl;
-	cout << "4:´òÓ¡BÊ÷Ë÷Òı" << endl;
-	cout << "5:´òÓ¡Ò¶×Ó½áµã" << endl;
+	cout << "1:æ–°å¢æ•°æ® æ ¼å¼ï¼ˆkey valueï¼‰;" << endl;
+	cout << "2:åˆ é™¤æ•°æ® æ ¼å¼ï¼ˆkeyï¼‰;" << endl;
+	cout << "3:æŸ¥è¯¢æ•°æ® æ ¼å¼ï¼ˆkeyï¼‰;" << endl;
+	cout << "4:æ‰“å°Bæ ‘ç´¢å¼•" << endl;
+	cout << "5:æ‰“å°å¶å­ç»“ç‚¹" << endl;
 }
 
 void t_del() {
@@ -122,20 +122,20 @@ void t_del() {
 	btree.printAllLeaf();
 
 	btree.add(85, 85);
-	cout << "É¾³ı65Ö®Ç°-------------------------------------" << endl;
+	cout << "åˆ é™¤65ä¹‹å‰-------------------------------------" << endl;
 	btree.print();
 	btree.printAllLeaf();
-	cout << "É¾³ı65Ö®ºó-------------------------------------" << endl;
+	cout << "åˆ é™¤65ä¹‹å-------------------------------------" << endl;
 	btree.del(65);
 	btree.print();
 	btree.printAllLeaf();
 
-	//ºÏ²¢×ó½áµã
+	//åˆå¹¶å·¦ç»“ç‚¹
 	//btree.del(100);
 	//btree.print();
 	//btree.printAllLeaf();
 
-	//ºÏ²¢ÓÒ½áµã
+	//åˆå¹¶å³ç»“ç‚¹
 	btree.del(85);
 	btree.print();
 	btree.printAllLeaf();
@@ -143,15 +143,15 @@ void t_del() {
 	btree.print();
 	btree.printAllLeaf();
 
-	//¹¹Ôìµ¼ÖÂ¸¸½áµãÒ²ºÏ²¢µÄÇé¿ö
+	//æ„é€ å¯¼è‡´çˆ¶ç»“ç‚¹ä¹Ÿåˆå¹¶çš„æƒ…å†µ
 
 
-	//ÄÚ²¿½áµãºÏ²¢²¢ÇÒÍ¨¹ı½è½áµãÊµÏÖ£¨Ïò×ó½è£©
+	//å†…éƒ¨ç»“ç‚¹åˆå¹¶å¹¶ä¸”é€šè¿‡å€Ÿç»“ç‚¹å®ç°ï¼ˆå‘å·¦å€Ÿï¼‰
 	btree.del(61);
 	btree.print();
 	btree.printAllLeaf();
 
-	//ÄÚ²¿½áµãºÏ²¢²¢ÇÒÍ¨¹ı½è½áµãÊµÏÖ£¨ÏòÓÒ½è£©
+	//å†…éƒ¨ç»“ç‚¹åˆå¹¶å¹¶ä¸”é€šè¿‡å€Ÿç»“ç‚¹å®ç°ï¼ˆå‘å³å€Ÿï¼‰
 	btree.del(50);
 	btree.print();
 	btree.printAllLeaf();
@@ -160,12 +160,12 @@ void t_del() {
 	btree.print();
 	btree.printAllLeaf();
 
-	//ÄÚ²¿½áµãºÏ²¢²¢ÇÒÍ¨¹ıºÏ²¢ÊµÏÖ(Óë×ó±ßĞÖµÜºÏ²¢)
+	//å†…éƒ¨ç»“ç‚¹åˆå¹¶å¹¶ä¸”é€šè¿‡åˆå¹¶å®ç°(ä¸å·¦è¾¹å…„å¼Ÿåˆå¹¶)
 	//btree.del(88);
 	//btree.print();
 	//btree.printAllLeaf();
 
-	//ÄÚ²¿½áµãºÏ²¢²¢ÇÒÍ¨¹ıºÏ²¢ÊµÏÖ(ÓëÓÒ±ßĞÖµÜºÏ²¢)
+	//å†…éƒ¨ç»“ç‚¹åˆå¹¶å¹¶ä¸”é€šè¿‡åˆå¹¶å®ç°(ä¸å³è¾¹å…„å¼Ÿåˆå¹¶)
 	btree.del(20);
 	btree.print();
 	btree.printAllLeaf();
@@ -177,7 +177,7 @@ void t_del() {
 	btree.print();
 	btree.printAllLeaf();
 
-	//²»¶ÏÉ¾³ı£¬ÖªµÀ¶à²ãµİ¹éÉ¾³ı
+	//ä¸æ–­åˆ é™¤ï¼ŒçŸ¥é“å¤šå±‚é€’å½’åˆ é™¤
 	btree.del(10);
 	btree.print();
 

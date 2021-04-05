@@ -1,4 +1,3 @@
-#pragma once
 
 #include <iostream>
 #include <string>
@@ -9,30 +8,30 @@
 using namespace std;
 
 /*	@desc:BTreeNode
-@1:BÊ÷µÄÌØµã£¨Ö¸¶¨Ã¿¸ö½áµã×î¶àn¸ökeyµÄÇé¿ö£©
-@¸ù½áµã£º¸ù½áµãÖĞÖÁÉÙÓĞÁ½¸öÖ¸Õë±»Ê¹ÓÃ£¬ËùÓĞ½áµãÖ¸ÏòBÊ÷ÏÂÒ»²ã½áµã¡£
-@Ò¶×Ó½áµã£º¼üÓĞĞò´Ó×óµ½ÓÒ·Ö²¼¡£×îºóÒ»¸öÖ¸ÕëÓÃÓÚÖ¸ÏòÍ¬²ãÏÂÒ»¸ö½áµã¡£Ê£ÏÂÖ¸ÕëÖĞÖÁÉÙ((n+1)/2)ÏÂÈ¡Õû¸ö±»Ê¹ÓÃ£¬×ÔÈ»Ò²ÖÁÉÙ((n+1)/2)ÏÂÈ¡Õû¸ökey¡£
-@ÄÚ²ã½áµã£º¼üÓĞĞò¡£ÖÁÉÙ((n+1)/2)ÉÏÈ¡Õû¸öÖ¸ÕëÊ¹ÓÃ¡£
+@1:Bæ ‘çš„ç‰¹ç‚¹ï¼ˆæŒ‡å®šæ¯ä¸ªç»“ç‚¹æœ€å¤šnä¸ªkeyçš„æƒ…å†µï¼‰
+@æ ¹ç»“ç‚¹ï¼šæ ¹ç»“ç‚¹ä¸­è‡³å°‘æœ‰ä¸¤ä¸ªæŒ‡é’ˆè¢«ä½¿ç”¨ï¼Œæ‰€æœ‰ç»“ç‚¹æŒ‡å‘Bæ ‘ä¸‹ä¸€å±‚ç»“ç‚¹ã€‚
+@å¶å­ç»“ç‚¹ï¼šé”®æœ‰åºä»å·¦åˆ°å³åˆ†å¸ƒã€‚æœ€åä¸€ä¸ªæŒ‡é’ˆç”¨äºæŒ‡å‘åŒå±‚ä¸‹ä¸€ä¸ªç»“ç‚¹ã€‚å‰©ä¸‹æŒ‡é’ˆä¸­è‡³å°‘((n+1)/2)ä¸‹å–æ•´ä¸ªè¢«ä½¿ç”¨ï¼Œè‡ªç„¶ä¹Ÿè‡³å°‘((n+1)/2)ä¸‹å–æ•´ä¸ªkeyã€‚
+@å†…å±‚ç»“ç‚¹ï¼šé”®æœ‰åºã€‚è‡³å°‘((n+1)/2)ä¸Šå–æ•´ä¸ªæŒ‡é’ˆä½¿ç”¨ã€‚
 
-¾ÙÀı1£ºn=3£¬ÔòÒ¶×Ó½áµãÖÁÉÙ2¸öÖ¸Õë£¬2¸ökey¡£ÄÚ²ã½áµãÖÁÉÙ2¸öÖ¸Õë£¬1¸ökey¡£
-¾ÙÀı2£ºn=4£¬ÔòÒ¶×Ó½áµãÖÁÉÙ2¸öÖ¸Õë£¬2¸ökey¡£ÄÚ²ã½áµãÖÁÉÙ3¸öÖ¸Õë£¬2¸ökey¡£
-¾ÙÀı3£ºn=5£ºÔòÒ¶×Ó½áµãÖÁÉÙ3¸öÖ¸Õë£¬3¸ökey¡£ÄÚ²ã½áµãÖÁÉÙ3¸öÖ¸Õë£¬2¸ökey¡£
-¾ÙÀı4£ºn=10£ºÔòÒ¶×Ó½áµãÖÁÉÙ5¸öÖ¸Õë£¬5¸ökey¡£ÄÚ²ã½áµãÖÁÉÙ6¸öÖ¸Õë£¬5¸ökey¡£
+ä¸¾ä¾‹1ï¼šn=3ï¼Œåˆ™å¶å­ç»“ç‚¹è‡³å°‘2ä¸ªæŒ‡é’ˆï¼Œ2ä¸ªkeyã€‚å†…å±‚ç»“ç‚¹è‡³å°‘2ä¸ªæŒ‡é’ˆï¼Œ1ä¸ªkeyã€‚
+ä¸¾ä¾‹2ï¼šn=4ï¼Œåˆ™å¶å­ç»“ç‚¹è‡³å°‘2ä¸ªæŒ‡é’ˆï¼Œ2ä¸ªkeyã€‚å†…å±‚ç»“ç‚¹è‡³å°‘3ä¸ªæŒ‡é’ˆï¼Œ2ä¸ªkeyã€‚
+ä¸¾ä¾‹3ï¼šn=5ï¼šåˆ™å¶å­ç»“ç‚¹è‡³å°‘3ä¸ªæŒ‡é’ˆï¼Œ3ä¸ªkeyã€‚å†…å±‚ç»“ç‚¹è‡³å°‘3ä¸ªæŒ‡é’ˆï¼Œ2ä¸ªkeyã€‚
+ä¸¾ä¾‹4ï¼šn=10ï¼šåˆ™å¶å­ç»“ç‚¹è‡³å°‘5ä¸ªæŒ‡é’ˆï¼Œ5ä¸ªkeyã€‚å†…å±‚ç»“ç‚¹è‡³å°‘6ä¸ªæŒ‡é’ˆï¼Œ5ä¸ªkeyã€‚
 */
 
 template <class KeyType, class ValueType>
 class BTreeNode {
 public:
-	int keyNumber = 0;//ÓÃÓÚ¼ÇÂ¼µ±Ç°±¾½áµãÖĞkeyµÄÊıÁ¿¡£
-	bool isLeaf = true;//±êÊ¶±¾½áµãÊÇ·ñÎªÒ¶×Ó½áµã¡£
-	KeyType * key;//keyÓÃÓÚ¼ÇÂ¼ËùÓĞµÄkey¡£
-				  //n¸ö(´´½¨Ê±´´½¨n+1¸ö£¬²»Ê¹ÓÃµÚ0¸ö)
-	BTreeNode<KeyType, ValueType> * parent;//parentÖ¸Ïò¸¸½Úµã
-	void ** ptr; //ptrÊÇº¢×ÓÖ¸Õë
-				 //n+1¸ö(´´½¨Ê±´´½¨n+1¸ö£¬È«²¿Ê¹ÓÃ)
-	ValueType * value;//Ò¶×Ó½áµãµÄÖµ¡£
+	int keyNumber = 0;//ç”¨äºè®°å½•å½“å‰æœ¬ç»“ç‚¹ä¸­keyçš„æ•°é‡ã€‚
+	bool isLeaf = true;//æ ‡è¯†æœ¬ç»“ç‚¹æ˜¯å¦ä¸ºå¶å­ç»“ç‚¹ã€‚
+	KeyType * key;//keyç”¨äºè®°å½•æ‰€æœ‰çš„keyã€‚
+				  //nä¸ª(åˆ›å»ºæ—¶åˆ›å»ºn+1ä¸ªï¼Œä¸ä½¿ç”¨ç¬¬0ä¸ª)
+	BTreeNode<KeyType, ValueType> * parent;//parentæŒ‡å‘çˆ¶èŠ‚ç‚¹
+	void ** ptr; //ptræ˜¯å­©å­æŒ‡é’ˆ
+				 //n+1ä¸ª(åˆ›å»ºæ—¶åˆ›å»ºn+1ä¸ªï¼Œå…¨éƒ¨ä½¿ç”¨)
+	ValueType * value;//å¶å­ç»“ç‚¹çš„å€¼ã€‚
 
-	BTreeNode(int n, bool isLeaf);//n±íÊ¾½áµãÔÊĞíµÄ×î´ókeyÊıÁ¿
+	BTreeNode(int n, bool isLeaf);//nè¡¨ç¤ºç»“ç‚¹å…è®¸çš„æœ€å¤§keyæ•°é‡
 	~BTreeNode();
 };
 
@@ -46,7 +45,7 @@ BTreeNode<KeyType, ValueType>::BTreeNode(int n, bool isLeaf) {
 	for (int i = 0; i < n + 1; i++) {
 		this->ptr[i] = NULL;
 	}
-	//Ò¶×Ó½áµã
+	//å¶å­ç»“ç‚¹
 	if (isLeaf) {
 		value = new ValueType[n + 1];
 	}
@@ -70,13 +69,13 @@ BTreeNode<KeyType, ValueType>::~BTreeNode() {
 template <class KeyType, class ValueType>
 class BTree {
 private:
-	int n = 0;//n±íÊ¾Ã¿¸ö½áµã×îÉÙµÄkeyÊıÁ¿¡£
+	int n = 0;//nè¡¨ç¤ºæ¯ä¸ªç»“ç‚¹æœ€å°‘çš„keyæ•°é‡ã€‚
 	int innerNodeMinPtrs = 0;
 	int innerNodeMinKey = 0;
 	int leafNodeMinPtrs = 0;
 	int leafNodeMinKey = 0;
 
-	BTreeNode<KeyType, ValueType> * root;//¸ù½áµã¡£
+	BTreeNode<KeyType, ValueType> * root;//æ ¹ç»“ç‚¹ã€‚
 
 public:
 
@@ -84,84 +83,84 @@ public:
 
 	~BTree();
 
-	//ÊÍ·ÅpËùÖ¸Ïò½áµãÒÔ¼°Æä×Ó½áµã¡£
+	//é‡Šæ”¾pæ‰€æŒ‡å‘ç»“ç‚¹ä»¥åŠå…¶å­ç»“ç‚¹ã€‚
 	void freeNode(BTreeNode<KeyType, ValueType> * p);
 
-	//ÔÚË÷ÒıÊ÷ÖÖ²éÕÒ¹Ø¼ü×Ökey¡£
-	//	ÕÒµ½Ê±pÖ¸ÏòkeyËùÔÚ½áµã, ·µ»ØkeyËùÔÚÎ»ÖÃi;
-	//	ÕÒ²»µ½Ê±, pÖ¸ÏòkeyÓ¦¸Ã²åÈëµÄÒ¶×Ó½áµã, ·µ»Ø0¡£
+	//åœ¨ç´¢å¼•æ ‘ç§æŸ¥æ‰¾å…³é”®å­—keyã€‚
+	//	æ‰¾åˆ°æ—¶pæŒ‡å‘keyæ‰€åœ¨ç»“ç‚¹, è¿”å›keyæ‰€åœ¨ä½ç½®i;
+	//	æ‰¾ä¸åˆ°æ—¶, pæŒ‡å‘keyåº”è¯¥æ’å…¥çš„å¶å­ç»“ç‚¹, è¿”å›0ã€‚
 	int find(BTreeNode<KeyType, ValueType> * & p, KeyType key);
 
-	//ÔÚË÷ÒıÊ÷ÖÖ²éÕÒ¹Ø¼ü×Ökey£¬·µ»Ø¶ÔÓ¦µÄÖµ¡£
-	//-1±íÊ¾ÕÒ²»µ½
+	//åœ¨ç´¢å¼•æ ‘ç§æŸ¥æ‰¾å…³é”®å­—keyï¼Œè¿”å›å¯¹åº”çš„å€¼ã€‚
+	//-1è¡¨ç¤ºæ‰¾ä¸åˆ°
 	ValueType getKeyValue(KeyType key);
 
-	//ÔÚÖ¸¶¨½áµãÖĞÖÖ²éÕÒ¹Ø¼ü×ÖkeyµÄÎ»ÖÃ¡£
-	//	ÕÒµ½--->·µ»ØkeyËùÔÚÎ»ÖÃi;
-	//	ÕÒ²»µ½->·µ»Ø-1¡£
+	//åœ¨æŒ‡å®šç»“ç‚¹ä¸­ç§æŸ¥æ‰¾å…³é”®å­—keyçš„ä½ç½®ã€‚
+	//	æ‰¾åˆ°--->è¿”å›keyæ‰€åœ¨ä½ç½®i;
+	//	æ‰¾ä¸åˆ°->è¿”å›-1ã€‚
 	int indexOf(BTreeNode<KeyType, ValueType> * p, KeyType key);
 
-	//Ìí¼ÓÒ»¸ökey£¬key×îÖÕ»á±»Ìí¼Óµ½Ò»¸öÒ¶×Ó½áµã¡£
+	//æ·»åŠ ä¸€ä¸ªkeyï¼Œkeyæœ€ç»ˆä¼šè¢«æ·»åŠ åˆ°ä¸€ä¸ªå¶å­ç»“ç‚¹ã€‚
 	int add(KeyType key, ValueType value);
 
-	//ÏòÒ»¸öÖ¸¶¨µÄÒ¶×Ó½áµãÖĞ²åÈëkey¡£
+	//å‘ä¸€ä¸ªæŒ‡å®šçš„å¶å­ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 	void insert2node(BTreeNode<KeyType, ValueType> * p, KeyType key, ValueType value);
 
-	//ÏòÒ»¸öÖ¸¶¨µÄÎ´ÂúÒ¶×Ó½áµãÖĞ²åÈëkey¡£
+	//å‘ä¸€ä¸ªæŒ‡å®šçš„æœªæ»¡å¶å­ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 	void insert2notFullNode(BTreeNode<KeyType, ValueType> * p, KeyType key, ValueType value);
 
-	//ÏòÒ»¸öÖ¸¶¨µÄÄÚ²¿½áµãÖĞ²åÈëkey¡£
+	//å‘ä¸€ä¸ªæŒ‡å®šçš„å†…éƒ¨ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 	void insertToInnerNode(BTreeNode<KeyType, ValueType> * p, KeyType key, BTreeNode<KeyType, ValueType> * ptr);
 
-	//ÏòÒ»¸öÖ¸¶¨µÄÎ´ÂúÄÚ²¿½áµãÖĞ²åÈëkey¡£
+	//å‘ä¸€ä¸ªæŒ‡å®šçš„æœªæ»¡å†…éƒ¨ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 	void insertToNotFullInnerNode(BTreeNode<KeyType, ValueType> * p, KeyType key, BTreeNode<KeyType, ValueType> * ptr);
 
-	//·ÖÁÑÒ¶×Ó½áµã
+	//åˆ†è£‚å¶å­ç»“ç‚¹
 	BTreeNode<KeyType, ValueType> * splitNode(BTreeNode<KeyType, ValueType> * p,
 		KeyType key,
 		ValueType value);
 
-	//·ÖÁÑÄÚ²¿½áµã
+	//åˆ†è£‚å†…éƒ¨ç»“ç‚¹
 	BTreeNode<KeyType, ValueType> * splitInnerNode(BTreeNode<KeyType, ValueType> * p,
 		KeyType key,
 		BTreeNode<KeyType, ValueType> * ptr);
 
-	//É¾³ıkey
+	//åˆ é™¤key
 	bool del(int key);
 
-	//É¾³ıÖ¸¶¨½áµãÖĞÖ¸¶¨Î»ÖÃµÄkey£¬²¢ÇÒÈç¹ûĞèÒª¸üĞÂ×æÏÈ½áµãÖµÔò¸üĞÂ¡£
+	//åˆ é™¤æŒ‡å®šç»“ç‚¹ä¸­æŒ‡å®šä½ç½®çš„keyï¼Œå¹¶ä¸”å¦‚æœéœ€è¦æ›´æ–°ç¥–å…ˆç»“ç‚¹å€¼åˆ™æ›´æ–°ã€‚
 	bool del_direct_index(BTreeNode<KeyType, ValueType> * p, int index);
 
-	//É¾³ıÖ¸¶¨ÄÚ²¿½áµãÖĞkey¡£
+	//åˆ é™¤æŒ‡å®šå†…éƒ¨ç»“ç‚¹ä¸­keyã€‚
 	bool del_inner_direct_index(BTreeNode<KeyType, ValueType> * p, int index);
 
-	//É¾³ıÄÚ²¿½áµãµÄÖ¸¶¨key¡£
+	//åˆ é™¤å†…éƒ¨ç»“ç‚¹çš„æŒ‡å®škeyã€‚
 	bool del_inner_node(BTreeNode<KeyType, ValueType> * p, int key);
 
-	//ÔÚÖ¸¶¨½áµãÖĞÖÖ²éÕÒ¹Ø¼ü×ÖkeyµÄÎ»ÖÃ¡£
-	//	·µ»ØpÔÚÆä¸¸Ç×ÖĞÎ»ÖÃi;
-	//	ÈôpÎŞ¸¸Ç×£¬·µ»Ø-1.
+	//åœ¨æŒ‡å®šç»“ç‚¹ä¸­ç§æŸ¥æ‰¾å…³é”®å­—keyçš„ä½ç½®ã€‚
+	//	è¿”å›påœ¨å…¶çˆ¶äº²ä¸­ä½ç½®i;
+	//	è‹¥pæ— çˆ¶äº²ï¼Œè¿”å›-1.
 	int indexInParent(BTreeNode<KeyType, ValueType> * p);
 
-	//µİ¹éÌæ»»oldKeyÎªnewKey(Ö±½ÓÕÒµ½²¢ÇÒÌæ»»Ôò½áÊø£¬»òÕßµ½¸ù½áµã¶¼Ã»ÕÒµ½Ò²½áÊø)¡£
+	//é€’å½’æ›¿æ¢oldKeyä¸ºnewKey(ç›´æ¥æ‰¾åˆ°å¹¶ä¸”æ›¿æ¢åˆ™ç»“æŸï¼Œæˆ–è€…åˆ°æ ¹ç»“ç‚¹éƒ½æ²¡æ‰¾åˆ°ä¹Ÿç»“æŸ)ã€‚
 	void replace(BTreeNode<KeyType, ValueType> * p, KeyType oldKey, KeyType newKey);
 
-	//·µ»ØÊ÷µÄµÚÒ»¸öÒ¶×Ó½áµã¡£
+	//è¿”å›æ ‘çš„ç¬¬ä¸€ä¸ªå¶å­ç»“ç‚¹ã€‚
 	BTreeNode<KeyType, ValueType> * firstLeafNode();
 
-	//´òÓ¡BÊ÷(·½±ãµ÷ÊÔ)
+	//æ‰“å°Bæ ‘(æ–¹ä¾¿è°ƒè¯•)
 	void print();
 
-	//´òÓ¡Ò¶×Ó½áµã¡£
+	//æ‰“å°å¶å­ç»“ç‚¹ã€‚
 	void printAllLeaf();
 
-	//´òÓ¡Ò»¸ö½áµãµÄkey
+	//æ‰“å°ä¸€ä¸ªç»“ç‚¹çš„key
 	void printNode(BTreeNode<KeyType, ValueType> * pNode);
 
 };
 
 /**
-@desc:¹¹Ôìº¯Êı£¬n±íÊ¾Ã¿¸ö½áµã×î¶àµÄkeyµÄÊıÁ¿¡£
+@desc:æ„é€ å‡½æ•°ï¼Œnè¡¨ç¤ºæ¯ä¸ªç»“ç‚¹æœ€å¤šçš„keyçš„æ•°é‡ã€‚
 */
 template <class KeyType, class ValueType>
 BTree<KeyType, ValueType>::BTree(int n) {
@@ -173,7 +172,7 @@ BTree<KeyType, ValueType>::BTree(int n) {
 	root = new BTreeNode<KeyType, ValueType>(n, true);
 
 
-	//Ë÷ÒıÔØÈë¡£
+	//ç´¢å¼•è½½å…¥ã€‚
 	fstream fs;
 	fs.open("index", ios::in | ios::binary);
 	KeyType key;
@@ -195,17 +194,17 @@ BTree<KeyType, ValueType>::BTree(int n) {
 }
 
 /**
-@desc:Îö¹¹º¯Êı£¬ÊÍ·ÅÕû¸öÊ÷µÄ½áµã¿Õ¼ä¡£
+@desc:ææ„å‡½æ•°ï¼Œé‡Šæ”¾æ•´ä¸ªæ ‘çš„ç»“ç‚¹ç©ºé—´ã€‚
 */
 template <class KeyType, class ValueType>
 BTree<KeyType, ValueType>::~BTree() {
 
-	//Ë÷ÒıĞ´ÈëÎÄ¼ş¡£
+	//ç´¢å¼•å†™å…¥æ–‡ä»¶ã€‚
 	fstream fs("index", ios::out | ios::binary);
 	KeyType key;
 	BTreeNode<KeyType, ValueType> * p = this->firstLeafNode();
 	while (p) {
-		//±éÀúp
+		//éå†p
 		for (int i = 1; i <= p->keyNumber; i++) {
 			fs.write((char*)(&(p->key[i])), sizeof(KeyType));
 			fs.write((char*)(&(p->value[i])), sizeof(ValueType));
@@ -221,31 +220,31 @@ BTree<KeyType, ValueType>::~BTree() {
 }
 
 /**
-@desc:ÊÍ·ÅpËùÖ¸Ïò½áµãÒÔ¼°Æä×Ó½áµã¡£
+@desc:é‡Šæ”¾pæ‰€æŒ‡å‘ç»“ç‚¹ä»¥åŠå…¶å­ç»“ç‚¹ã€‚
 */
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::freeNode(BTreeNode<KeyType, ValueType> * p) {
-	//Ò¶×Ó½áµãÖ±½ÓÊÍ·Å²¢ÇÒ·µ»Ø¡£
+	//å¶å­ç»“ç‚¹ç›´æ¥é‡Šæ”¾å¹¶ä¸”è¿”å›ã€‚
 	if (p->isLeaf) {
 		delete p;
 		return;
 	}
-	//·ÇÒ¶×Ó½áµã£¬Ê×ÏÈÑ­»·ÊÍ·ÅpËùÖ¸Ïò½áµãµÄËùÓĞ×ÓÊ÷
-	//×¢Òâ£ºkeyÊÇ´ÓÏÂ±ê1->keyNumnber
-	//ptrÊÇ´ÓÏÂ±ê0->keyNumnber
-	//ptr»á±Èkey¶àÒ»¸ö
+	//éå¶å­ç»“ç‚¹ï¼Œé¦–å…ˆå¾ªç¯é‡Šæ”¾pæ‰€æŒ‡å‘ç»“ç‚¹çš„æ‰€æœ‰å­æ ‘
+	//æ³¨æ„ï¼škeyæ˜¯ä»ä¸‹æ ‡1->keyNumnber
+	//ptræ˜¯ä»ä¸‹æ ‡0->keyNumnber
+	//pträ¼šæ¯”keyå¤šä¸€ä¸ª
 	for (int i = 0; i <= p->keyNumber; i++) {
 		freeNode((BTreeNode<KeyType, ValueType> *)(p->ptr[i]));
 	}
-	//ÊÍ·Åp½áµã
+	//é‡Šæ”¾pç»“ç‚¹
 	delete p;
 }
 
 /*
-@desc:ÔÚË÷ÒıÊ÷ÖÖ²éÕÒ¹Ø¼ü×Ökey¡£
+@desc:åœ¨ç´¢å¼•æ ‘ç§æŸ¥æ‰¾å…³é”®å­—keyã€‚
 @return:
-ÕÒµ½Ê±pÖ¸ÏòkeyËùÔÚ½áµã,·µ»ØkeyËùÔÚÎ»ÖÃi;
-ÕÒ²»µ½Ê±,pÖ¸ÏòkeyÓ¦¸Ã²åÈëµÄÒ¶×Ó½áµã,·µ»Ø0¡£
+æ‰¾åˆ°æ—¶pæŒ‡å‘keyæ‰€åœ¨ç»“ç‚¹,è¿”å›keyæ‰€åœ¨ä½ç½®i;
+æ‰¾ä¸åˆ°æ—¶,pæŒ‡å‘keyåº”è¯¥æ’å…¥çš„å¶å­ç»“ç‚¹,è¿”å›0ã€‚
 */
 template <class KeyType, class ValueType>
 int BTree<KeyType, ValueType>::find(BTreeNode<KeyType, ValueType> * & p, KeyType key)
@@ -257,26 +256,26 @@ int BTree<KeyType, ValueType>::find(BTreeNode<KeyType, ValueType> * & p, KeyType
 			i--;
 		}
 		/*
-		Ò¶×Ó½áµã:
-		//i==0 ==> key<p->key[1],·µ»Øi(0) ==> Ã»ÕÒµ½
-		//i!=0 ==> key>=p->key[i],·µ»Øi(·Ç0,´ú±íÁËÎ»ÖÃ)
-		//     ==> key==p->key[i]ÔòÕÒµ½,·ñÔòÃ»ÕÒµ½¡£
+		å¶å­ç»“ç‚¹:
+		//i==0 ==> key<p->key[1],è¿”å›i(0) ==> æ²¡æ‰¾åˆ°
+		//i!=0 ==> key>=p->key[i],è¿”å›i(é0,ä»£è¡¨äº†ä½ç½®)
+		//     ==> key==p->key[i]åˆ™æ‰¾åˆ°,å¦åˆ™æ²¡æ‰¾åˆ°ã€‚
 		*/
 		if (p->isLeaf) {
 			if (i > 0 && key == p->key[i]) {
-				return i;//ÕÒµ½
+				return i;//æ‰¾åˆ°
 			}
-			return 0;//ÕÒ²»µ½
+			return 0;//æ‰¾ä¸åˆ°
 		}
 		else {
-			p = (BTreeNode<KeyType, ValueType> *)(p->ptr[i]);//Èç¹û²»ÊÇÒ¶×Ó½áµã,Ôò¼ÌĞøËÑÑ°×ÓÊ÷¡£
+			p = (BTreeNode<KeyType, ValueType> *)(p->ptr[i]);//å¦‚æœä¸æ˜¯å¶å­ç»“ç‚¹,åˆ™ç»§ç»­æœå¯»å­æ ‘ã€‚
 		}
-	}//p==NULLÀíÂÛÉÏÊÇ²»´æÔÚÕâÖÖÇé¿öµÄ,Ö»ÓĞÒì³£Çé¿ö¡£
-	return -1;//Òì³£Çé¿ö
+	}//p==NULLç†è®ºä¸Šæ˜¯ä¸å­˜åœ¨è¿™ç§æƒ…å†µçš„,åªæœ‰å¼‚å¸¸æƒ…å†µã€‚
+	return -1;//å¼‚å¸¸æƒ…å†µ
 }
 
-//ÔÚË÷ÒıÊ÷ÖÖ²éÕÒ¹Ø¼ü×Ökey£¬·µ»Ø¶ÔÓ¦µÄÖµ¡£
-//-1±íÊ¾ÕÒ²»µ½
+//åœ¨ç´¢å¼•æ ‘ç§æŸ¥æ‰¾å…³é”®å­—keyï¼Œè¿”å›å¯¹åº”çš„å€¼ã€‚
+//-1è¡¨ç¤ºæ‰¾ä¸åˆ°
 template <class KeyType, class ValueType>
 ValueType BTree<KeyType, ValueType>::getKeyValue(KeyType key) {
 	BTreeNode<KeyType, ValueType> * pNode;
@@ -288,16 +287,16 @@ ValueType BTree<KeyType, ValueType>::getKeyValue(KeyType key) {
 }
 
 /*
-@desc:Ìí¼Ókeyµ½Ë÷ÒıÊ÷ÖĞ¡£
+@desc:æ·»åŠ keyåˆ°ç´¢å¼•æ ‘ä¸­ã€‚
 @return:
--1,²åÈëkey¹ı³Ì·¢ÉúÒì³£¡£
-0,²åÈëkeyÒÑ¾­´æÔÚÁË¡£
-1,²åÈë³É¹¦¡£
+-1,æ’å…¥keyè¿‡ç¨‹å‘ç”Ÿå¼‚å¸¸ã€‚
+0,æ’å…¥keyå·²ç»å­˜åœ¨äº†ã€‚
+1,æ’å…¥æˆåŠŸã€‚
 */
 
-//ÔÚÖ¸¶¨½áµãÖĞÖÖ²éÕÒ¹Ø¼ü×ÖkeyµÄÎ»ÖÃ¡£
-//	ÕÒµ½--->·µ»ØkeyËùÔÚÎ»ÖÃi;
-//	ÕÒ²»µ½->·µ»Ø-1¡£
+//åœ¨æŒ‡å®šç»“ç‚¹ä¸­ç§æŸ¥æ‰¾å…³é”®å­—keyçš„ä½ç½®ã€‚
+//	æ‰¾åˆ°--->è¿”å›keyæ‰€åœ¨ä½ç½®i;
+//	æ‰¾ä¸åˆ°->è¿”å›-1ã€‚
 template <class KeyType, class ValueType>
 int BTree<KeyType, ValueType>::indexOf(BTreeNode<KeyType, ValueType> * p, KeyType key) {
 	int i = p->keyNumber;
@@ -316,20 +315,20 @@ int BTree<KeyType, ValueType>::indexOf(BTreeNode<KeyType, ValueType> * p, KeyTyp
 template <class KeyType, class ValueType>
 int BTree<KeyType, ValueType>::add(KeyType key, ValueType value)
 {
-	BTreeNode<KeyType, ValueType> * p = NULL;//´´½¨Ò»¸ö½áµãÖ¸ÕëÓÃÓÚ²éÑ¯keyµÄÊ±ºò´æ´¢·µ»Ø½áµãÖ¸Õë¡£
+	BTreeNode<KeyType, ValueType> * p = NULL;//åˆ›å»ºä¸€ä¸ªç»“ç‚¹æŒ‡é’ˆç”¨äºæŸ¥è¯¢keyçš„æ—¶å€™å­˜å‚¨è¿”å›ç»“ç‚¹æŒ‡é’ˆã€‚
 	int ret = this->find(p, key);
 	if (ret == -1 || p == NULL) {
-		return -1;//Òì³£Çé¿ö
+		return -1;//å¼‚å¸¸æƒ…å†µ
 	}
 	if (ret != 0) {
-		return 0;//ÔÚË÷ÒıÖĞÕÒµ½ÁËkey,²»½øĞĞ²Ù×÷,·µ»Ø0¡£
+		return 0;//åœ¨ç´¢å¼•ä¸­æ‰¾åˆ°äº†key,ä¸è¿›è¡Œæ“ä½œ,è¿”å›0ã€‚
 	}
 	insert2node(p, key, value);
 	return 1;
 }
 
 /*
-@desc:·ÖÁÑÒ¶×Ó½áµãp£¬·µ»Ø·ÖÁÑºóÓÒ±ßÄÇ¸ö½áµã¡£
+@desc:åˆ†è£‚å¶å­ç»“ç‚¹pï¼Œè¿”å›åˆ†è£‚åå³è¾¹é‚£ä¸ªç»“ç‚¹ã€‚
 */
 template <class KeyType, class ValueType>
 BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitNode(BTreeNode<KeyType, ValueType> * p, KeyType key, ValueType value) {
@@ -337,13 +336,13 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitNode(BTreeNode<K
 	r->isLeaf = p->isLeaf;
 	r->parent = p->parent;
 
-	//1,2,3,...,leafNodeMinKey(leafMinKey¸ökeyÔÚ×ó½áµã)
-	//leafNodeMinKey+1,leafNodeMinKey+2m....(Ê£ÏÂµÄÔÚÓÒ½áµã)
-	//key·ÅÄÄ±ßÄØ£¿Èç¹û·Å×ó±ß£¬ÔòĞèÒª°ÑleafNodeMinKeyÄÇÒ»Ïî·ÅÓÒ±ß
+	//1,2,3,...,leafNodeMinKey(leafMinKeyä¸ªkeyåœ¨å·¦ç»“ç‚¹)
+	//leafNodeMinKey+1,leafNodeMinKey+2m....(å‰©ä¸‹çš„åœ¨å³ç»“ç‚¹)
+	//keyæ”¾å“ªè¾¹å‘¢ï¼Ÿå¦‚æœæ”¾å·¦è¾¹ï¼Œåˆ™éœ€è¦æŠŠleafNodeMinKeyé‚£ä¸€é¡¹æ”¾å³è¾¹
 
-	//Èç¹ûkeyĞ¡ÓÚleafMinKeyÄÇ¸öÎ»ÖÃµÄkeyÔò»áÔÚ×ó½áµãÖĞ
+	//å¦‚æœkeyå°äºleafMinKeyé‚£ä¸ªä½ç½®çš„keyåˆ™ä¼šåœ¨å·¦ç»“ç‚¹ä¸­
 	if (key < p->key[this->leafNodeMinKey]) {
-		//´ÓleafMinKeyÎ»ÖÃ¿ªÊ¼Íùr½áµãÖĞ¸´ÖÆ
+		//ä»leafMinKeyä½ç½®å¼€å§‹å¾€rç»“ç‚¹ä¸­å¤åˆ¶
 		int j = 1;
 		for (int i = this->leafNodeMinKey; i <= p->keyNumber; i++, j++) {
 			r->key[j] = p->key[i];
@@ -351,7 +350,7 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitNode(BTreeNode<K
 			//r->ptr[j] = p->ptr[i];
 			//p->ptr[i] = NULL;
 		}
-		//ÔÚ×ó±ß½áµãÖĞ²åÈëkey,½«Òª²åÈëÎ»ÖÃÖ®ºóµÄkeyºÍptr½øĞĞºóÒÆ¡£
+		//åœ¨å·¦è¾¹ç»“ç‚¹ä¸­æ’å…¥key,å°†è¦æ’å…¥ä½ç½®ä¹‹åçš„keyå’Œptrè¿›è¡Œåç§»ã€‚
 		int i = -1;
 		for (i = this->leafNodeMinKey - 1; i > 0; i--) {
 			if (key < p->key[i]) {
@@ -360,24 +359,24 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitNode(BTreeNode<K
 				//p->ptr[i + 1] = p->ptr[i];
 			}
 			else {
-				//´ËÊ±keyÒª²åÈëµÄÎ»ÖÃ¾ÍÊÇi+1´¦
+				//æ­¤æ—¶keyè¦æ’å…¥çš„ä½ç½®å°±æ˜¯i+1å¤„
 				break;
 			}
 		}
-		//²åÈëkey
+		//æ’å…¥key
 		p->key[i + 1] = key;
 		p->value[i + 1] = value;
 		p->keyNumber = this->leafNodeMinKey;
-		//È·¶¨ÓÒ±ß½áµãµÄkeyÊıÁ¿
+		//ç¡®å®šå³è¾¹ç»“ç‚¹çš„keyæ•°é‡
 		r->keyNumber = this->n + 1 - p->keyNumber;
 	}
 	else {
-		//´ÓleafMinKey+1Î»ÖÃ¿ªÊ¼Íùr½áµãÖĞ¸´ÖÆ(¸´ÖÆ¹ı³ÌÖĞË³±ã²åÈëkey)
+		//ä»leafMinKey+1ä½ç½®å¼€å§‹å¾€rç»“ç‚¹ä¸­å¤åˆ¶(å¤åˆ¶è¿‡ç¨‹ä¸­é¡ºä¾¿æ’å…¥key)
 		int j = 1;
 		int flag = 0;
 		for (int i = this->leafNodeMinKey + 1; i <= p->keyNumber; i++) {
 			if (p->key[i] > key) {
-				//²åÈëkey
+				//æ’å…¥key
 				r->key[j] = key;
 				r->value[j] = value;
 				j++;
@@ -390,16 +389,16 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitNode(BTreeNode<K
 			j++;
 		}
 		if (!flag) {
-			//Ã»ÓĞ²åÈëkey£¬ËµÃ÷keyÊÇ×î´óµÄ£¬ËùÒÔ¼ÌĞø²åÈëkey¼´¿É
+			//æ²¡æœ‰æ’å…¥keyï¼Œè¯´æ˜keyæ˜¯æœ€å¤§çš„ï¼Œæ‰€ä»¥ç»§ç»­æ’å…¥keyå³å¯
 			r->key[j] = key;
 			r->value[j] = value;
 		}
-		//È·¶¨×ó±ß½áµãµÄkeyÊıÁ¿
+		//ç¡®å®šå·¦è¾¹ç»“ç‚¹çš„keyæ•°é‡
 		p->keyNumber = this->leafNodeMinKey;
-		//È·¶¨ÓÒ±ß½áµãµÄkeyÊıÁ¿
+		//ç¡®å®šå³è¾¹ç»“ç‚¹çš„keyæ•°é‡
 		r->keyNumber = this->n + 1 - p->keyNumber;
 	}
-	//Í¨¹ıµÚ0¸öÖ¸ÕëÖ¸ÏòÏÂÒ»¸öÒ¶×Ó½áµã
+	//é€šè¿‡ç¬¬0ä¸ªæŒ‡é’ˆæŒ‡å‘ä¸‹ä¸€ä¸ªå¶å­ç»“ç‚¹
 	if (p->isLeaf) {
 		r->ptr[0] = p->ptr[0];
 		p->ptr[0] = r;
@@ -409,8 +408,8 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitNode(BTreeNode<K
 }
 
 /*
-@desc:·ÖÁÑÄÚ²¿½áµãp£¬·µ»Ø·ÖÁÑºóÓÒ±ßÄÇ¸ö½áµã¡£
-@return£º·µ»Ø·ÖÁÑ³öÀ´µÄÓÒ±ß½áµã£¬²¢ÇÒ£¬ÓÒ±ß½áµãµÄ0ºÅÎ»ÖÃkeyÊÇĞèÒª²åÈëµ½¸¸½áµãÖĞµÄ¡£
+@desc:åˆ†è£‚å†…éƒ¨ç»“ç‚¹pï¼Œè¿”å›åˆ†è£‚åå³è¾¹é‚£ä¸ªç»“ç‚¹ã€‚
+@returnï¼šè¿”å›åˆ†è£‚å‡ºæ¥çš„å³è¾¹ç»“ç‚¹ï¼Œå¹¶ä¸”ï¼Œå³è¾¹ç»“ç‚¹çš„0å·ä½ç½®keyæ˜¯éœ€è¦æ’å…¥åˆ°çˆ¶ç»“ç‚¹ä¸­çš„ã€‚
 */
 template <class KeyType, class ValueType>
 BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitInnerNode(BTreeNode<KeyType, ValueType> * p, KeyType key, BTreeNode<KeyType, ValueType> * ptr) {
@@ -418,27 +417,27 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitInnerNode(BTreeN
 	r->isLeaf = p->isLeaf;
 	r->parent = p->parent;
 
-	//1,2,3,...,leafNodeMinKey(leafMinKey¸ökeyÔÚ×ó½áµã)
-	//leafNodeMinKey+1,leafNodeMinKey+2m....(Ê£ÏÂµÄÔÚÓÒ½áµã)
-	//key·ÅÄÄ±ßÄØ£¿Èç¹û·Å×ó±ß£¬ÔòĞèÒª°ÑleafNodeMinKeyÄÇÒ»Ïî·ÅÓÒ±ß
+	//1,2,3,...,leafNodeMinKey(leafMinKeyä¸ªkeyåœ¨å·¦ç»“ç‚¹)
+	//leafNodeMinKey+1,leafNodeMinKey+2m....(å‰©ä¸‹çš„åœ¨å³ç»“ç‚¹)
+	//keyæ”¾å“ªè¾¹å‘¢ï¼Ÿå¦‚æœæ”¾å·¦è¾¹ï¼Œåˆ™éœ€è¦æŠŠleafNodeMinKeyé‚£ä¸€é¡¹æ”¾å³è¾¹
 
-	//--->²¢ÇÒ²»Í¬ÓÚÒ¶×Ó½áµã·ÖÁÑµÄÊÇ£¬ÓÒ±ß½áµãµÄµÚÒ»¸ökey²»´æ´¢£¬¶øÊÇÒª×÷ÎªpµÄparentµÄkey²åÈë½øÈ¥¡£
+	//--->å¹¶ä¸”ä¸åŒäºå¶å­ç»“ç‚¹åˆ†è£‚çš„æ˜¯ï¼Œå³è¾¹ç»“ç‚¹çš„ç¬¬ä¸€ä¸ªkeyä¸å­˜å‚¨ï¼Œè€Œæ˜¯è¦ä½œä¸ºpçš„parentçš„keyæ’å…¥è¿›å»ã€‚
 
-	//Èç¹ûkeyĞ¡ÓÚleafMinKeyÄÇ¸öÎ»ÖÃµÄkeyÔò»áÔÚ×ó½áµãÖĞ
+	//å¦‚æœkeyå°äºleafMinKeyé‚£ä¸ªä½ç½®çš„keyåˆ™ä¼šåœ¨å·¦ç»“ç‚¹ä¸­
 	if (key < p->key[this->leafNodeMinKey]) {
-		//´ÓleafMinKeyÎ»ÖÃ¿ªÊ¼Íùr½áµãÖĞ¸´ÖÆ
-		/*	×¢Òâ´Ë´¦jÉèÖÃÎª0
-		@1£ºÊ×ÏÈ£¬leafNodeMinKeyÎ»ÖÃµÄkeyÊÇ²»ĞèÒª·Åµ½ÓÒ½áµãµÄ£¬ËùÒÔ·ÅÈëÓÒ½áµã0Î»ÖÃÒ²ÎŞ·Á£¨0Î»ÖÃÎŞÓÃ£©
-		@2£ºÆä´Î£¬ÓÒ½áµãµÄptr[0]Î»ÖÃĞèÒª·ÅÖÃµÄÊÇ×¼±¸²åÈëµ½¸¸½áµãÖĞµÄkey¶ÔÓ¦µÄÄÇ¸öptr¡£¶øÕâÖÖÇé¿öÏÂÒ²ÕıºÃ¾ÍÊÇleafNodeMinKeyÎ»ÖÃ¡£
+		//ä»leafMinKeyä½ç½®å¼€å§‹å¾€rç»“ç‚¹ä¸­å¤åˆ¶
+		/*	æ³¨æ„æ­¤å¤„jè®¾ç½®ä¸º0
+		@1ï¼šé¦–å…ˆï¼ŒleafNodeMinKeyä½ç½®çš„keyæ˜¯ä¸éœ€è¦æ”¾åˆ°å³ç»“ç‚¹çš„ï¼Œæ‰€ä»¥æ”¾å…¥å³ç»“ç‚¹0ä½ç½®ä¹Ÿæ— å¦¨ï¼ˆ0ä½ç½®æ— ç”¨ï¼‰
+		@2ï¼šå…¶æ¬¡ï¼Œå³ç»“ç‚¹çš„ptr[0]ä½ç½®éœ€è¦æ”¾ç½®çš„æ˜¯å‡†å¤‡æ’å…¥åˆ°çˆ¶ç»“ç‚¹ä¸­çš„keyå¯¹åº”çš„é‚£ä¸ªptrã€‚è€Œè¿™ç§æƒ…å†µä¸‹ä¹Ÿæ­£å¥½å°±æ˜¯leafNodeMinKeyä½ç½®ã€‚
 		*/
 		int j = 0;
 		for (int i = this->leafNodeMinKey; i <= p->keyNumber; i++, j++) {
 			r->key[j] = p->key[i];
 			r->ptr[j] = p->ptr[i];
-			((BTreeNode<KeyType, ValueType> *)(r->ptr[j]))->parent = r;//¸üĞÂ¸¸½áµã
+			((BTreeNode<KeyType, ValueType> *)(r->ptr[j]))->parent = r;//æ›´æ–°çˆ¶ç»“ç‚¹
 			p->ptr[i] = NULL;
 		}
-		//ÔÚ×ó±ß½áµãÖĞ²åÈëkey,½«Òª²åÈëÎ»ÖÃÖ®ºóµÄkeyºÍptr½øĞĞºóÒÆ¡£
+		//åœ¨å·¦è¾¹ç»“ç‚¹ä¸­æ’å…¥key,å°†è¦æ’å…¥ä½ç½®ä¹‹åçš„keyå’Œptrè¿›è¡Œåç§»ã€‚
 		int i = -1;
 		for (i = this->leafNodeMinKey - 1; i > 0; i--) {
 			if (key < p->key[i]) {
@@ -446,25 +445,25 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitInnerNode(BTreeN
 				p->ptr[i + 1] = p->ptr[i];
 			}
 			else {
-				//´ËÊ±keyÒª²åÈëµÄÎ»ÖÃ¾ÍÊÇi+1´¦
+				//æ­¤æ—¶keyè¦æ’å…¥çš„ä½ç½®å°±æ˜¯i+1å¤„
 				break;
 			}
 		}
-		//²åÈëkey
+		//æ’å…¥key
 		p->key[i + 1] = key;
 		p->ptr[i + 1] = ptr;
-		ptr->parent = p;//¸üĞÂ¸¸½áµã
+		ptr->parent = p;//æ›´æ–°çˆ¶ç»“ç‚¹
 		p->keyNumber = this->leafNodeMinKey;
-		//È·¶¨ÓÒ±ß½áµãµÄkeyÊıÁ¿(Ïà¶ÔÒ¶×Ó½áµã·ÖÁÑ¶à¼õÈ¥1)
+		//ç¡®å®šå³è¾¹ç»“ç‚¹çš„keyæ•°é‡(ç›¸å¯¹å¶å­ç»“ç‚¹åˆ†è£‚å¤šå‡å»1)
 		r->keyNumber = this->n + 1 - p->keyNumber - 1;
 	}
 	else {
-		//´ÓleafMinKey+1Î»ÖÃ¿ªÊ¼Íùr½áµãÖĞ¸´ÖÆ(¸´ÖÆ¹ı³ÌÖĞË³±ã²åÈëkey)
+		//ä»leafMinKey+1ä½ç½®å¼€å§‹å¾€rç»“ç‚¹ä¸­å¤åˆ¶(å¤åˆ¶è¿‡ç¨‹ä¸­é¡ºä¾¿æ’å…¥key)
 		int j = 0;
 		int flag = 0;
 		for (int i = this->leafNodeMinKey + 1; i <= p->keyNumber; i++) {
 			if (p->key[i] > key) {
-				//²åÈëkey
+				//æ’å…¥key
 				r->key[j] = key;
 				r->ptr[j] = ptr;
 				ptr->parent = r;
@@ -473,57 +472,57 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::splitInnerNode(BTreeN
 			}
 			r->key[j] = p->key[i];
 			r->ptr[j] = p->ptr[i];
-			((BTreeNode<KeyType, ValueType> *)(r->ptr[j]))->parent = r;//¸üĞÂ¸¸½áµã
+			((BTreeNode<KeyType, ValueType> *)(r->ptr[j]))->parent = r;//æ›´æ–°çˆ¶ç»“ç‚¹
 			p->ptr[i] = NULL;
 			j++;
 		}
 		if (!flag) {
-			//Ã»ÓĞ²åÈëkey£¬ËµÃ÷keyÊÇ×î´óµÄ£¬ËùÒÔ¼ÌĞø²åÈëkey¼´¿É
+			//æ²¡æœ‰æ’å…¥keyï¼Œè¯´æ˜keyæ˜¯æœ€å¤§çš„ï¼Œæ‰€ä»¥ç»§ç»­æ’å…¥keyå³å¯
 			r->key[j] = key;
 			r->ptr[j] = ptr;
 			ptr->parent = r;
 		}
-		//È·¶¨×ó±ß½áµãµÄkeyÊıÁ¿
+		//ç¡®å®šå·¦è¾¹ç»“ç‚¹çš„keyæ•°é‡
 		p->keyNumber = this->leafNodeMinKey;
-		//È·¶¨ÓÒ±ß½áµãµÄkeyÊıÁ¿(Ïà±ÈÒ¶×Ó½áµã·ÖÁÑ¶à¼õÈ¥1)
+		//ç¡®å®šå³è¾¹ç»“ç‚¹çš„keyæ•°é‡(ç›¸æ¯”å¶å­ç»“ç‚¹åˆ†è£‚å¤šå‡å»1)
 		r->keyNumber = this->n + 1 - p->keyNumber - 1;
 	}
 	return r;
 }
 
-//ÏòÒ»¸öÖ¸¶¨µÄ½áµãÖĞ²åÈëkey¡£
+//å‘ä¸€ä¸ªæŒ‡å®šçš„ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::insert2node(BTreeNode<KeyType, ValueType> * p, KeyType key, ValueType value) {
-	//Èç¹û½áµãÎ´Âú
+	//å¦‚æœç»“ç‚¹æœªæ»¡
 	if (p->keyNumber < n) {
 		this->insert2notFullNode(p, key, value);
 	}
 	else {
-		//½áµãÂúÁË£¬·ÖÁÑp½áµã¡£
+		//ç»“ç‚¹æ»¡äº†ï¼Œåˆ†è£‚pç»“ç‚¹ã€‚
 		BTreeNode<KeyType, ValueType> * r = this->splitNode(p, key, value);
-		//Ïò¸¸½áµã²åÈëkey
+		//å‘çˆ¶ç»“ç‚¹æ’å…¥key
 		if (p->parent) {
-			//·ÖÁÑµÄ²»ÊÇ¸ù½áµã
+			//åˆ†è£‚çš„ä¸æ˜¯æ ¹ç»“ç‚¹
 			this->insertToInnerNode(p->parent, r->key[1], r);
 		}
 		else {
-			//·ÖÁÑµÄÊÇ¸ù½áµã
+			//åˆ†è£‚çš„æ˜¯æ ¹ç»“ç‚¹
 			BTreeNode<KeyType, ValueType> * newRoot = new BTreeNode<KeyType, ValueType>(this->n, false);
 			newRoot->keyNumber = 1;
 			newRoot->key[1] = r->key[1];
 			newRoot->ptr[0] = p;
 			newRoot->ptr[1] = r;
-			p->parent = newRoot;//¸üĞÂ¸¸Ç×
-			r->parent = newRoot;//¸üĞÂ¸¸Ç×
+			p->parent = newRoot;//æ›´æ–°çˆ¶äº²
+			r->parent = newRoot;//æ›´æ–°çˆ¶äº²
 			this->root = newRoot;
 		}
 	}
 }
 
-//ÏòÒ»¸öÖ¸¶¨µÄÎ´Âú½áµãÖĞ²åÈëkey
+//å‘ä¸€ä¸ªæŒ‡å®šçš„æœªæ»¡ç»“ç‚¹ä¸­æ’å…¥key
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::insert2notFullNode(BTreeNode<KeyType, ValueType> * p, KeyType key, ValueType value) {
-	//Ê×ÏÈ½«Òª²åÈëÎ»ÖÃÖ®ºóµÄkeyºÍptr½øĞĞºóÒÆ¡£
+	//é¦–å…ˆå°†è¦æ’å…¥ä½ç½®ä¹‹åçš„keyå’Œptrè¿›è¡Œåç§»ã€‚
 	int i = -1;
 	for (i = p->keyNumber; i > 0; i--) {
 		if (key < p->key[i]) {
@@ -532,43 +531,43 @@ void BTree<KeyType, ValueType>::insert2notFullNode(BTreeNode<KeyType, ValueType>
 			//p->ptr[i + 1] = p->ptr[i];
 		}
 		else {
-			//´ËÊ±key>p->key[i](µÈÓÚµÄÇé¿ö²»´æÔÚ,µÈÓÚ¼´ÒÑ¾­´æÔÚkey,²»»áÖ´ĞĞµ½Õâ¡£)
-			//´ËÊ±keyÒª²åÈëµÄÎ»ÖÃ¾ÍÊÇi+1´¦
+			//æ­¤æ—¶key>p->key[i](ç­‰äºçš„æƒ…å†µä¸å­˜åœ¨,ç­‰äºå³å·²ç»å­˜åœ¨key,ä¸ä¼šæ‰§è¡Œåˆ°è¿™ã€‚)
+			//æ­¤æ—¶keyè¦æ’å…¥çš„ä½ç½®å°±æ˜¯i+1å¤„
 			break;
 		}
 	}
-	//²åÈëkey
+	//æ’å…¥key
 	p->key[i + 1] = key;
 	p->value[i + 1] = value;
 	p->keyNumber++;
 }
 
 /**
-@desc:ÏòÒ»¸öÖ¸¶¨µÄÄÚ²¿½áµãÖĞ²åÈëkey¡£
+@desc:å‘ä¸€ä¸ªæŒ‡å®šçš„å†…éƒ¨ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 */
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::insertToInnerNode(BTreeNode<KeyType, ValueType> * p, KeyType key, BTreeNode<KeyType, ValueType> * ptr) {
-	//Èç¹û¸ÃÄÚ²¿½áµãÎ´Âú
+	//å¦‚æœè¯¥å†…éƒ¨ç»“ç‚¹æœªæ»¡
 	if (p->keyNumber < n) {
 		this->insertToNotFullInnerNode(p, key, ptr);
 	}
 	else {
-		//½áµãÂúÁË£¬·ÖÁÑp½áµã¡£
+		//ç»“ç‚¹æ»¡äº†ï¼Œåˆ†è£‚pç»“ç‚¹ã€‚
 		BTreeNode<KeyType, ValueType> * r = this->splitInnerNode(p, key, ptr);
-		//Ïò¸¸½áµã²åÈëkey
+		//å‘çˆ¶ç»“ç‚¹æ’å…¥key
 		if (p->parent) {
-			//·ÖÁÑµÄ²»ÊÇ¸ù½áµã
+			//åˆ†è£‚çš„ä¸æ˜¯æ ¹ç»“ç‚¹
 			this->insertToInnerNode(p->parent, r->key[0], r);
 		}
 		else {
-			//·ÖÁÑµÄÊÇ¸ù½áµã
+			//åˆ†è£‚çš„æ˜¯æ ¹ç»“ç‚¹
 			BTreeNode<KeyType, ValueType> * newRoot = new BTreeNode<KeyType, ValueType>(this->n, false);
 			newRoot->keyNumber = 1;
 			newRoot->key[1] = r->key[0];
 			newRoot->ptr[0] = p;
 			newRoot->ptr[1] = r;
-			p->parent = newRoot;//¸üĞÂ¸¸Ç×
-			r->parent = newRoot;//¸üĞÂ¸¸Ç×
+			p->parent = newRoot;//æ›´æ–°çˆ¶äº²
+			r->parent = newRoot;//æ›´æ–°çˆ¶äº²
 			this->root = newRoot;
 		}
 
@@ -576,11 +575,11 @@ void BTree<KeyType, ValueType>::insertToInnerNode(BTreeNode<KeyType, ValueType> 
 }
 
 /**
-@desc:ÏòÒ»¸öÖ¸¶¨µÄÎ´ÂúÄÚ²¿½áµãÖĞ²åÈëkey¡£
+@desc:å‘ä¸€ä¸ªæŒ‡å®šçš„æœªæ»¡å†…éƒ¨ç»“ç‚¹ä¸­æ’å…¥keyã€‚
 */
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::insertToNotFullInnerNode(BTreeNode<KeyType, ValueType> * p, KeyType key, BTreeNode<KeyType, ValueType> * ptr) {
-	//Ê×ÏÈ½«Òª²åÈëÎ»ÖÃÖ®ºóµÄkeyºÍptr½øĞĞºóÒÆ¡£
+	//é¦–å…ˆå°†è¦æ’å…¥ä½ç½®ä¹‹åçš„keyå’Œptrè¿›è¡Œåç§»ã€‚
 	int i = -1;
 	for (i = p->keyNumber; i > 0; i--) {
 		if (key < p->key[i]) {
@@ -588,164 +587,164 @@ void BTree<KeyType, ValueType>::insertToNotFullInnerNode(BTreeNode<KeyType, Valu
 			p->ptr[i + 1] = p->ptr[i];
 		}
 		else {
-			//´ËÊ±key>p->key[i](µÈÓÚµÄÇé¿ö²»´æÔÚ,µÈÓÚ¼´ÒÑ¾­´æÔÚkey,²»»áÖ´ĞĞµ½Õâ¡£)
-			//´ËÊ±keyÒª²åÈëµÄÎ»ÖÃ¾ÍÊÇi+1´¦
+			//æ­¤æ—¶key>p->key[i](ç­‰äºçš„æƒ…å†µä¸å­˜åœ¨,ç­‰äºå³å·²ç»å­˜åœ¨key,ä¸ä¼šæ‰§è¡Œåˆ°è¿™ã€‚)
+			//æ­¤æ—¶keyè¦æ’å…¥çš„ä½ç½®å°±æ˜¯i+1å¤„
 			break;
 		}
 	}
-	//²åÈëkey
+	//æ’å…¥key
 	p->key[i + 1] = key;
 	p->ptr[i + 1] = ptr;
 	p->keyNumber++;
 }
 
 /*
-@desc:É¾³ıË÷ÒıÊ÷ÖĞµÄkey¡£
-@return:Èç¹ûÕÒ²»µ½ÒªÉ¾³ıµÄkey£¬·µ»Øfalse¡£
-·ñÔòÉ¾³ıkey£¬²¢ÇÒ·µ»Øtrue¡£
+@desc:åˆ é™¤ç´¢å¼•æ ‘ä¸­çš„keyã€‚
+@return:å¦‚æœæ‰¾ä¸åˆ°è¦åˆ é™¤çš„keyï¼Œè¿”å›falseã€‚
+å¦åˆ™åˆ é™¤keyï¼Œå¹¶ä¸”è¿”å›trueã€‚
 */
 template <class KeyType, class ValueType>
 bool BTree<KeyType, ValueType>::del(int key)
 {
-	BTreeNode<KeyType, ValueType> * p = NULL;//´´½¨Ò»¸ö½áµãÖ¸ÕëÓÃÓÚ²éÑ¯keyµÄÊ±ºò´æ´¢·µ»Ø½áµãÖ¸Õë¡£
+	BTreeNode<KeyType, ValueType> * p = NULL;//åˆ›å»ºä¸€ä¸ªç»“ç‚¹æŒ‡é’ˆç”¨äºæŸ¥è¯¢keyçš„æ—¶å€™å­˜å‚¨è¿”å›ç»“ç‚¹æŒ‡é’ˆã€‚
 	int ret = this->find(p, key);
 	if (ret == -1 || p == NULL) {
-		return false;//Òì³£Çé¿ö
+		return false;//å¼‚å¸¸æƒ…å†µ
 	}
 	if (!ret) {
 		//can not find
 		return false;
 	}
-	//Èç¹ûÉ¾³ıÖ®ºó½áµã»¹¹»×îÉÙÊıÁ¿¡£(»òÕßÌØÀı£ºÖ»ÓĞÒ»¸ö¸ù½áµãÒ¶×ÓµÄÇé¿öÒ²¿ÉÒÔÖ±½ÓÉ¾³ı¡£)
+	//å¦‚æœåˆ é™¤ä¹‹åç»“ç‚¹è¿˜å¤Ÿæœ€å°‘æ•°é‡ã€‚(æˆ–è€…ç‰¹ä¾‹ï¼šåªæœ‰ä¸€ä¸ªæ ¹ç»“ç‚¹å¶å­çš„æƒ…å†µä¹Ÿå¯ä»¥ç›´æ¥åˆ é™¤ã€‚)
 	if (p->keyNumber >= this->leafNodeMinKey + 1 || p->parent == NULL) {
 		return this->del_direct_index(p, ret);
 	}
 	else if (p->keyNumber == this->leafNodeMinKey) {
-		//Èç¹ûÉ¾³ıÖ®ºó½áµã²»¹»×îÉÙÊıÁ¿¡£
-		BTreeNode<KeyType, ValueType> * pp = p->parent;//¸¸½áµã
-		BTreeNode<KeyType, ValueType> * left_partner = NULL;//Ö¸ÏòÇóÖú¶ÔÏó½áµã
+		//å¦‚æœåˆ é™¤ä¹‹åç»“ç‚¹ä¸å¤Ÿæœ€å°‘æ•°é‡ã€‚
+		BTreeNode<KeyType, ValueType> * pp = p->parent;//çˆ¶ç»“ç‚¹
+		BTreeNode<KeyType, ValueType> * left_partner = NULL;//æŒ‡å‘æ±‚åŠ©å¯¹è±¡ç»“ç‚¹
 		BTreeNode<KeyType, ValueType> * right_partner = NULL;//
-		//ÊÔÍ¼´ÓÓÒ±ß½è(´ÓÓÒ±ß½è·½±ãÕÒ£¬ÒòÎª¿ÉÒÔ¸ù¾İp->ptr[0]ÕÒµ½ÓÒ±ß½áµã)
+		//è¯•å›¾ä»å³è¾¹å€Ÿ(ä»å³è¾¹å€Ÿæ–¹ä¾¿æ‰¾ï¼Œå› ä¸ºå¯ä»¥æ ¹æ®p->ptr[0]æ‰¾åˆ°å³è¾¹ç»“ç‚¹)
 		right_partner = (BTreeNode<KeyType, ValueType>*)(p->ptr[0]);
-		//ÅĞ¶ÏÊÇ·ñ´æÔÚÓÒĞÖµÜ£¬²¢ÇÒright_partnerÊÇ·ñÊÇÓÒÇ×ĞÖµÜ¡£
+		//åˆ¤æ–­æ˜¯å¦å­˜åœ¨å³å…„å¼Ÿï¼Œå¹¶ä¸”right_partneræ˜¯å¦æ˜¯å³äº²å…„å¼Ÿã€‚
 		if (right_partner && pp == right_partner->parent) {
-			//ÊÇÇ×ĞÖµÜ£¬½è¡£(×¢Òâ£¬Èç¹ûÊÇÇ×ĞÖµÜ£¬ÄÇÃ´right_partner->key[0] == pp->key[¶ÔÓ¦µÄÄÇ¸ökey]£¬ÒòÎªright_partnerÊÇÓÒ±ß£¬±ØÈ»²»»áÊÇÄ³¸ö×ÓÊ÷µÄµÚÒ»¸ö½áµã£¬Ö»ÓĞµÚÒ»¸ö½áµã²ÅÓĞ¿ÉÄÜ³öÏÖ[µÚÒ»¸ökeyÔÚ¸¸Ç×ÖĞ²»´æÔÚµÄÇé¿ö]¡£)
-			//Èç¹ûÓĞĞÖµÜkey¶àÓà×îÉÙkeyÊıÁ¿Ôò½è¡£
+			//æ˜¯äº²å…„å¼Ÿï¼Œå€Ÿã€‚(æ³¨æ„ï¼Œå¦‚æœæ˜¯äº²å…„å¼Ÿï¼Œé‚£ä¹ˆright_partner->key[0] == pp->key[å¯¹åº”çš„é‚£ä¸ªkey]ï¼Œå› ä¸ºright_partneræ˜¯å³è¾¹ï¼Œå¿…ç„¶ä¸ä¼šæ˜¯æŸä¸ªå­æ ‘çš„ç¬¬ä¸€ä¸ªç»“ç‚¹ï¼Œåªæœ‰ç¬¬ä¸€ä¸ªç»“ç‚¹æ‰æœ‰å¯èƒ½å‡ºç°[ç¬¬ä¸€ä¸ªkeyåœ¨çˆ¶äº²ä¸­ä¸å­˜åœ¨çš„æƒ…å†µ]ã€‚)
+			//å¦‚æœæœ‰å…„å¼Ÿkeyå¤šä½™æœ€å°‘keyæ•°é‡åˆ™å€Ÿã€‚
 			if (right_partner->keyNumber >= this->leafNodeMinKey + 1) {
-				//ÕÒµ½¸¸½áµãÖĞ¶ÔÓ¦ÓÚright_partner->key[1]µÄÎ»ÖÃ¡£
+				//æ‰¾åˆ°çˆ¶ç»“ç‚¹ä¸­å¯¹åº”äºright_partner->key[1]çš„ä½ç½®ã€‚
 				int pos = this->indexOf(pp, right_partner->key[1]);
-				//É¾³ı±¾½áµãÖĞµÄkey
+				//åˆ é™¤æœ¬ç»“ç‚¹ä¸­çš„key
 				this->del_direct_index(p, ret);
-				//Ïò±¾½áµãÖĞÌí¼Ó´Óright_partnerÖĞ½è¹ıÀ´µÄkey¡£
+				//å‘æœ¬ç»“ç‚¹ä¸­æ·»åŠ ä»right_partnerä¸­å€Ÿè¿‡æ¥çš„keyã€‚
 				p->keyNumber++;
 				p->key[p->keyNumber] = right_partner->key[1];
 				p->value[p->keyNumber] = right_partner->value[1];
 				//p->ptr[p->keyNumber] = right_partner->ptr[1];
-				//É¾³ıright_partnerÖĞ±»½è×ßµÄkey(Õâ¸ö¹ı³Ì²»¿ÉÄÜ·ÖÁÑ£¬¼ÈÈ»¸úËü½è£¬Ëü¾ÍÊÇÊıÁ¿¹»£¬²»»áÔÙÈ¥½èÒ²²»ºÏÔÙºÏ²¢)
+				//åˆ é™¤right_partnerä¸­è¢«å€Ÿèµ°çš„key(è¿™ä¸ªè¿‡ç¨‹ä¸å¯èƒ½åˆ†è£‚ï¼Œæ—¢ç„¶è·Ÿå®ƒå€Ÿï¼Œå®ƒå°±æ˜¯æ•°é‡å¤Ÿï¼Œä¸ä¼šå†å»å€Ÿä¹Ÿä¸åˆå†åˆå¹¶)
 				del_direct_index(right_partner, 1);
-				//ÖÁ´Ë£¬Õû¸öÉ¾³ı½áÊø£¬ËùÒÔÖ±½ÓÍË³ö¡£
+				//è‡³æ­¤ï¼Œæ•´ä¸ªåˆ é™¤ç»“æŸï¼Œæ‰€ä»¥ç›´æ¥é€€å‡ºã€‚
 				return true;
 			}
-			//else {//´Ë´¦±íÊ¾ÓĞÓÒÇ×ĞÖµÜµ«ÊÇÃ»ÓĞ×ã¹»ÊıÁ¿keyµ¼ÖÂ²»ÄÜ½è£¬Ô¤Áô£¬Èç¹ûĞèÒªºó±ß¿ÉÄÜĞèÒª±»ºÏ²¢¡£}
+			//else {//æ­¤å¤„è¡¨ç¤ºæœ‰å³äº²å…„å¼Ÿä½†æ˜¯æ²¡æœ‰è¶³å¤Ÿæ•°é‡keyå¯¼è‡´ä¸èƒ½å€Ÿï¼Œé¢„ç•™ï¼Œå¦‚æœéœ€è¦åè¾¹å¯èƒ½éœ€è¦è¢«åˆå¹¶ã€‚}
 		}
 		else {
-			//Èç¹ûright_partner!=NULL£¬¶øÃ»½øÈ¥ÉÏÒ»¸öif£¬ËµÃ÷((right_partner && pp == right_partner->parent))²»³ÉÁ¢£¬¼´ÓĞÓÒĞÖµÜµ«²»ÊÇÇ×ĞÖµÜ¡£
-			//Èç¹ûright_partner==NULL£¬Ã»ÓĞÓÒĞÖµÜ¡£
-			//×ÜÖ®£¬½øÈëelse´ú±íÃ»ÓĞÓÒÇ×ĞÖµÜ --> ±ØÈ»ÓĞ×óÇ×ĞÖµÜ¡£
+			//å¦‚æœright_partner!=NULLï¼Œè€Œæ²¡è¿›å»ä¸Šä¸€ä¸ªifï¼Œè¯´æ˜((right_partner && pp == right_partner->parent))ä¸æˆç«‹ï¼Œå³æœ‰å³å…„å¼Ÿä½†ä¸æ˜¯äº²å…„å¼Ÿã€‚
+			//å¦‚æœright_partner==NULLï¼Œæ²¡æœ‰å³å…„å¼Ÿã€‚
+			//æ€»ä¹‹ï¼Œè¿›å…¥elseä»£è¡¨æ²¡æœ‰å³äº²å…„å¼Ÿ --> å¿…ç„¶æœ‰å·¦äº²å…„å¼Ÿã€‚
 
-			//Ã»ÓĞÓÒÇ×ĞÖµÜµÄÓÒĞÖµÜ£¬Ã»ÓÃ£¬ËùÒÔÉèÖÃÎªNULL¡£
+			//æ²¡æœ‰å³äº²å…„å¼Ÿçš„å³å…„å¼Ÿï¼Œæ²¡ç”¨ï¼Œæ‰€ä»¥è®¾ç½®ä¸ºNULLã€‚
 			right_partner = NULL;
 		}
 
-		//ËùÒÔÖ»ÄÜÊÇÊÔÍ¼È¥ÕÒ×óĞÖµÜ(Í¨¹ıÅĞ¶Ï¸¸½áµãÖĞÊÇ·ñº¬ÓĞp->key[1]¿ÉÒÔÖªµÀÊÇ·ñÓĞ×óĞÖµÜ)¡£
-		//ÒòÎª£¬Ò»¸ö×ÓÊ÷ÖĞÖ»ÓĞµÚÒ»¸öº¢×ÓÊÇÎŞ×óĞÖµÜ£¬Ò²Ö»ÓĞµÚÒ»¸öº¢×ÓµÄkey[1]²»ÔÚ¸¸½áµãÖĞ¡£(×¢ÒâÕâ¾ä»°Ö»ÔÚÒ¶×Ó½áµãÖĞ³ÉÁ¢)
+		//æ‰€ä»¥åªèƒ½æ˜¯è¯•å›¾å»æ‰¾å·¦å…„å¼Ÿ(é€šè¿‡åˆ¤æ–­çˆ¶ç»“ç‚¹ä¸­æ˜¯å¦å«æœ‰p->key[1]å¯ä»¥çŸ¥é“æ˜¯å¦æœ‰å·¦å…„å¼Ÿ)ã€‚
+		//å› ä¸ºï¼Œä¸€ä¸ªå­æ ‘ä¸­åªæœ‰ç¬¬ä¸€ä¸ªå­©å­æ˜¯æ— å·¦å…„å¼Ÿï¼Œä¹Ÿåªæœ‰ç¬¬ä¸€ä¸ªå­©å­çš„key[1]ä¸åœ¨çˆ¶ç»“ç‚¹ä¸­ã€‚(æ³¨æ„è¿™å¥è¯åªåœ¨å¶å­ç»“ç‚¹ä¸­æˆç«‹)
 
-		//Ñ½Ñ½Ñ½Ñ½Ñ½Ñ½Ñ½¸öÅŞµÄ--->>>ÖØ´ó´íÎó£¬ÕÒÁËºÃ¾Ã£¬±¾Éí´Ë´¦µÄ²éÕÒ½ö½öÊÇÎªÁËÈ·¶¨ÊÇ·ñÊÇµÚÒ»¸öº¢×Ó£¬¶øµ÷ÓÃfindÔòÊÇµİ¹ép×ÓÊ÷ÖĞÊÇ·ñ´æÔÚÖ¸¶¨key£¬µ«Êµ¼ÊÇé¿öÊÇpp±¾Éí¾ÍÊÇpµÄ¸¸Ç×£¬µ±È»ÄÜÕÒµ½¡£´Ë´¦ÓÀÔ¶ÄÜÕÒµ½£¬ÆäËûÂß¼­ÉÏ´íÎó×ÔÈ»¾ÍÒ»¶Ñ¶ÑÀ´ÁË¡£
+		//å‘€å‘€å‘€å‘€å‘€å‘€å‘€ä¸ªå‘¸çš„--->>>é‡å¤§é”™è¯¯ï¼Œæ‰¾äº†å¥½ä¹…ï¼Œæœ¬èº«æ­¤å¤„çš„æŸ¥æ‰¾ä»…ä»…æ˜¯ä¸ºäº†ç¡®å®šæ˜¯å¦æ˜¯ç¬¬ä¸€ä¸ªå­©å­ï¼Œè€Œè°ƒç”¨findåˆ™æ˜¯é€’å½’på­æ ‘ä¸­æ˜¯å¦å­˜åœ¨æŒ‡å®škeyï¼Œä½†å®é™…æƒ…å†µæ˜¯ppæœ¬èº«å°±æ˜¯pçš„çˆ¶äº²ï¼Œå½“ç„¶èƒ½æ‰¾åˆ°ã€‚æ­¤å¤„æ°¸è¿œèƒ½æ‰¾åˆ°ï¼Œå…¶ä»–é€»è¾‘ä¸Šé”™è¯¯è‡ªç„¶å°±ä¸€å †å †æ¥äº†ã€‚
 		//int splitKey = this->find(pp, p->key[1]);
 		int splitKey = this->indexOf(pp, p->key[1]);
 		if (splitKey != -1) {
-			//Èç¹û²»ÊÇ0£¬ËµÃ÷ÄÜÕÒµ½£¬´Ë´¦²»ĞèÒªÅĞ¶ÏÊÇ·ñÊÇÇ×ĞÖµÜ£¬¿Ï¶¨ÊÇÇ×µÄ¡£
-			//splitKeyÎ»ÖÃÖ¸ÕëÎªp£¬splitKey-1Î»ÖÃÖ¸Õë¼´Îª×óĞÖµÜ¡£
-			//µ«ÊÇĞèÒªÅĞ¶Ï¸ÃĞÖµÜÊÇ·ñÓĞ×ã¹»µÄkeyÄÜ¹»½è¡£
+			//å¦‚æœä¸æ˜¯0ï¼Œè¯´æ˜èƒ½æ‰¾åˆ°ï¼Œæ­¤å¤„ä¸éœ€è¦åˆ¤æ–­æ˜¯å¦æ˜¯äº²å…„å¼Ÿï¼Œè‚¯å®šæ˜¯äº²çš„ã€‚
+			//splitKeyä½ç½®æŒ‡é’ˆä¸ºpï¼ŒsplitKey-1ä½ç½®æŒ‡é’ˆå³ä¸ºå·¦å…„å¼Ÿã€‚
+			//ä½†æ˜¯éœ€è¦åˆ¤æ–­è¯¥å…„å¼Ÿæ˜¯å¦æœ‰è¶³å¤Ÿçš„keyèƒ½å¤Ÿå€Ÿã€‚
 			left_partner = (BTreeNode<KeyType, ValueType> *)(pp->ptr[splitKey - 1]);
 			if (left_partner->keyNumber >= this->leafNodeMinKey + 1) {
-				//¿ÉÒÔ½è¡£
-				//ÏÈÉ¾³ıp½áµãµÄretÎ»ÖÃkey(Ö±½ÓÉ¾³ı£¬²»½èÒ²²»ºÏ²¢)¡£
+				//å¯ä»¥å€Ÿã€‚
+				//å…ˆåˆ é™¤pç»“ç‚¹çš„retä½ç½®key(ç›´æ¥åˆ é™¤ï¼Œä¸å€Ÿä¹Ÿä¸åˆå¹¶)ã€‚
 				this->del_direct_index(p, ret);
-				//¸üĞÂ¸¸½áµãÖĞ p->key[1] --> left_partner->key[left_partner->keyNumber]
+				//æ›´æ–°çˆ¶ç»“ç‚¹ä¸­ p->key[1] --> left_partner->key[left_partner->keyNumber]
 				this->replace(pp, p->key[1], left_partner->key[left_partner->keyNumber]);
-				//È»ºó´Ó×óĞÖµÜÖĞ½èÒ»¸ö¹ıÀ´¡£
+				//ç„¶åä»å·¦å…„å¼Ÿä¸­å€Ÿä¸€ä¸ªè¿‡æ¥ã€‚
 				this->insert2notFullNode(p, left_partner->key[left_partner->keyNumber], left_partner->value[left_partner->keyNumber]);
 				left_partner->keyNumber--;
-				//ÖÁ´Ë£¬Õû¸öÉ¾³ıÓÖ½áÊøÁË¡£
+				//è‡³æ­¤ï¼Œæ•´ä¸ªåˆ é™¤åˆç»“æŸäº†ã€‚
 				return true;
-			}//else {//´Ë´¦±íÊ¾ÓĞ×óÇ×ĞÖµÜµ«ÊÇÃ»ÓĞ×ã¹»ÊıÁ¿keyµ¼ÖÂ²»ÄÜ½è£¬Ô¤Áô£¬Èç¹ûĞèÒªºó±ß¿ÉÄÜĞèÒª±»ºÏ²¢¡£}
+			}//else {//æ­¤å¤„è¡¨ç¤ºæœ‰å·¦äº²å…„å¼Ÿä½†æ˜¯æ²¡æœ‰è¶³å¤Ÿæ•°é‡keyå¯¼è‡´ä¸èƒ½å€Ÿï¼Œé¢„ç•™ï¼Œå¦‚æœéœ€è¦åè¾¹å¯èƒ½éœ€è¦è¢«åˆå¹¶ã€‚}
 		}
 		else {
-			//pÊÇ¸¸Ç×µÄµÚÒ»¸öº¢×Ó£¬Ò²¾ÍÊÇÃ»ÓĞ×óÇ×ĞÖµÜ¡£
+			//pæ˜¯çˆ¶äº²çš„ç¬¬ä¸€ä¸ªå­©å­ï¼Œä¹Ÿå°±æ˜¯æ²¡æœ‰å·¦äº²å…„å¼Ÿã€‚
 			left_partner = NULL;
 		}
 
-		//Èç¹ûµ½´ïÕâÀï£¬ËµÃ÷×óÓÒĞÖµÜ¶¼Ã»ÄÜ³É¹¦½èµ½¡£
-		//µ«ÊÇ×¢Òâ£¬²»¿ÉÄÜÁ½¸öĞÖµÜ¶¼²»´æÔÚ£¬×î¶àÒ»¸ö²»´æÔÚ£¬ÁíÒ»¸ö²»¹»½è¡£
-		//ËùÒÔºÏ²¢¼´¿É¡£
+		//å¦‚æœåˆ°è¾¾è¿™é‡Œï¼Œè¯´æ˜å·¦å³å…„å¼Ÿéƒ½æ²¡èƒ½æˆåŠŸå€Ÿåˆ°ã€‚
+		//ä½†æ˜¯æ³¨æ„ï¼Œä¸å¯èƒ½ä¸¤ä¸ªå…„å¼Ÿéƒ½ä¸å­˜åœ¨ï¼Œæœ€å¤šä¸€ä¸ªä¸å­˜åœ¨ï¼Œå¦ä¸€ä¸ªä¸å¤Ÿå€Ÿã€‚
+		//æ‰€ä»¥åˆå¹¶å³å¯ã€‚
 		if (!left_partner && !right_partner) {
-			//Òì³£Çé¿ö£¬¼´×óÓÒÇ×ĞÖµÜ¶¼Ã»ÓĞ¡£
-			cout << "Òì³££¬ÎÒ¾¹È»Ò»¸öÇ×ĞÖµÜ¶¼Ã»ÓĞ£¡" << endl;
+			//å¼‚å¸¸æƒ…å†µï¼Œå³å·¦å³äº²å…„å¼Ÿéƒ½æ²¡æœ‰ã€‚
+			cout << "å¼‚å¸¸ï¼Œæˆ‘ç«Ÿç„¶ä¸€ä¸ªäº²å…„å¼Ÿéƒ½æ²¡æœ‰ï¼" << endl;
 			return false;
 		}
 
-		//ÓĞÒ»¸öÇ×ĞÖµÜ
-		//¿ªÊ¼É¾³ıÒÔ¼°ºÏ²¢
+		//æœ‰ä¸€ä¸ªäº²å…„å¼Ÿ
+		//å¼€å§‹åˆ é™¤ä»¥åŠåˆå¹¶
 		if (left_partner) {
-			//cout<< "ºÏ²¢×óĞÖµÜ½áµã" <<endl;
-			//ºÏ²¢×óĞÖµÜ
-			//½«±¾½áµãÉ¾³ıÖ¸¶¨keyºóÊ£ÓàµÄkeyÈ«²¿¸´ÖÆµ½×ó½áµãÖĞ¡£
-			//±¾½áµãÖĞkey±È×ó½áµãÖĞËùÓĞkey¶¼´ó£¬ËùÒÔ¿ÉÒÔË³Ğò¸´ÖÆ¹ıÈ¥¡£
-			//É¾³ı£¨Ö±½ÓÉ¾³ı£©
+			//cout<< "åˆå¹¶å·¦å…„å¼Ÿç»“ç‚¹" <<endl;
+			//åˆå¹¶å·¦å…„å¼Ÿ
+			//å°†æœ¬ç»“ç‚¹åˆ é™¤æŒ‡å®škeyåå‰©ä½™çš„keyå…¨éƒ¨å¤åˆ¶åˆ°å·¦ç»“ç‚¹ä¸­ã€‚
+			//æœ¬ç»“ç‚¹ä¸­keyæ¯”å·¦ç»“ç‚¹ä¸­æ‰€æœ‰keyéƒ½å¤§ï¼Œæ‰€ä»¥å¯ä»¥é¡ºåºå¤åˆ¶è¿‡å»ã€‚
+			//åˆ é™¤ï¼ˆç›´æ¥åˆ é™¤ï¼‰
 			this->del_direct_index(p, ret);
-			//¸´ÖÆ±¾½áµãÖĞkeyµ½×ó±ß½áµãÖĞ¡£
+			//å¤åˆ¶æœ¬ç»“ç‚¹ä¸­keyåˆ°å·¦è¾¹ç»“ç‚¹ä¸­ã€‚
 			int j = left_partner->keyNumber + 1;
 			for (int i = 1; i <= p->keyNumber; i++, j++) {
 				left_partner->key[j] = p->key[i];
 				left_partner->value[j] = p->value[i];
 				//left_partner->ptr[j] = p->ptr[i];
 			}
-			//¸üĞÂ×ó½áµãµÄkeyµÄÊıÁ¿¡£
+			//æ›´æ–°å·¦ç»“ç‚¹çš„keyçš„æ•°é‡ã€‚
 			left_partner->keyNumber += p->keyNumber;
-			//¸üĞÂÒ¶×Ó½áµãÖ±½ÓµÄÁ´½Ó¡£
+			//æ›´æ–°å¶å­ç»“ç‚¹ç›´æ¥çš„é“¾æ¥ã€‚
 			left_partner->ptr[0] = p->ptr[0];
-			//É¾³ı¸¸½áµãÖĞµÄkey=p->key[1]µÄÄÇ¸ökey¡£
+			//åˆ é™¤çˆ¶ç»“ç‚¹ä¸­çš„key=p->key[1]çš„é‚£ä¸ªkeyã€‚
 			this->del_inner_node(pp, p->key[1]);
-			//ÊÍ·Åp½áµã¿Õ¼ä
+			//é‡Šæ”¾pç»“ç‚¹ç©ºé—´
 			delete p;
 			return true;
 		}
 		else {
-			//ºÏ²¢ÓÒĞÖµÜ
-			//cout << "ºÏ²¢ÓÒĞÖµÜ½áµã" << endl;
-			//½«ÓÒĞÖµÜ½áµãÈ«²¿key¸´ÖÆµ½µ±Ç°½áµãÖĞ¡£
-			//ÓÒĞÖµÜ½áµãÖĞkey±Èµ±Ç°½áµãÖĞËùÓĞkey¶¼´ó£¬ËùÒÔ¿ÉÒÔË³Ğò¸´ÖÆ¡£
+			//åˆå¹¶å³å…„å¼Ÿ
+			//cout << "åˆå¹¶å³å…„å¼Ÿç»“ç‚¹" << endl;
+			//å°†å³å…„å¼Ÿç»“ç‚¹å…¨éƒ¨keyå¤åˆ¶åˆ°å½“å‰ç»“ç‚¹ä¸­ã€‚
+			//å³å…„å¼Ÿç»“ç‚¹ä¸­keyæ¯”å½“å‰ç»“ç‚¹ä¸­æ‰€æœ‰keyéƒ½å¤§ï¼Œæ‰€ä»¥å¯ä»¥é¡ºåºå¤åˆ¶ã€‚
 
-			//É¾³ı£¨Ö±½ÓÉ¾³ı£©
+			//åˆ é™¤ï¼ˆç›´æ¥åˆ é™¤ï¼‰
 			this->del_direct_index(p, ret);
 
-			//¸´ÖÆÓÒĞÖµÜ½áµãÖĞkeyµ½µ±Ç°±ß½áµãÖĞ¡£
+			//å¤åˆ¶å³å…„å¼Ÿç»“ç‚¹ä¸­keyåˆ°å½“å‰è¾¹ç»“ç‚¹ä¸­ã€‚
 			int j = p->keyNumber + 1;
 			for (int i = 1; i <= right_partner->keyNumber; i++, j++) {
 				p->key[j] = right_partner->key[i];
 				p->value[j] = right_partner->value[i];
 				//p->ptr[j] = right_partner->ptr[i];
 			}
-			//¸üĞÂµ±Ç°½áµãµÄkeyµÄÊıÁ¿¡£
+			//æ›´æ–°å½“å‰ç»“ç‚¹çš„keyçš„æ•°é‡ã€‚
 			p->keyNumber += right_partner->keyNumber;
-			//¸üĞÂÒ¶×Ó½áµãÖ±½ÓµÄÁ´½Ó¡£
+			//æ›´æ–°å¶å­ç»“ç‚¹ç›´æ¥çš„é“¾æ¥ã€‚
 			p->ptr[0] = right_partner->ptr[0];
 
-			//É¾³ı¸¸½áµãÖĞµÄkey=right_partner->key[1]µÄÄÇ¸ökey¡£
+			//åˆ é™¤çˆ¶ç»“ç‚¹ä¸­çš„key=right_partner->key[1]çš„é‚£ä¸ªkeyã€‚
 			this->del_inner_node(pp, right_partner->key[1]);
 
-			//ÊÍ·Åp½áµã¿Õ¼ä
+			//é‡Šæ”¾pç»“ç‚¹ç©ºé—´
 			delete right_partner;
 
 			return true;
@@ -757,189 +756,189 @@ bool BTree<KeyType, ValueType>::del(int key)
 	}
 }
 
-//É¾³ıÄÚ²¿½áµãµÄÖ¸¶¨key
+//åˆ é™¤å†…éƒ¨ç»“ç‚¹çš„æŒ‡å®škey
 template <class KeyType, class ValueType>
 bool BTree<KeyType, ValueType>::del_inner_node(BTreeNode<KeyType, ValueType> * p, int key) {
 	int ret = this->indexOf(p, key);
 	if (ret == -1) {
-		//Ã»ÕÒµ½
+		//æ²¡æ‰¾åˆ°
 		return false;
 	}
 	else {
-		//ÕÒµ½
+		//æ‰¾åˆ°
 		if (p->keyNumber >= this->innerNodeMinKey + 1) {
-			//¿ÉÒÔÖ±½ÓÉ¾³ı
+			//å¯ä»¥ç›´æ¥åˆ é™¤
 			this->del_inner_direct_index(p, ret);
 			return true;
 		}
 
-		//µ±Ç°½áµãÊÇ¸ù½áµãµÄÇé¿ö¡£
+		//å½“å‰ç»“ç‚¹æ˜¯æ ¹ç»“ç‚¹çš„æƒ…å†µã€‚
 		if (p->parent == NULL) {
 			if (p->keyNumber > 1) {
-				//»¹ÓĞÒ»¸öÒÔÉÏ½áµã
-				//Ö±½ÓÉ¾³ı¼´¿É¡£
+				//è¿˜æœ‰ä¸€ä¸ªä»¥ä¸Šç»“ç‚¹
+				//ç›´æ¥åˆ é™¤å³å¯ã€‚
 				this->del_inner_direct_index(p, ret);
 				return true;
 			}
 			else {
-				//Ö»Ê£ÏÂÒ»¸ö½áµãÁË
-				//ÕâÖÖÇé¿öĞèÒªÉ¾³ı¸ù½áµã¼´¿É£¬½«Î¨Ò»µÄÒ»¸öº¢×Ó×÷ÎªĞÂµÄ¸ù½áµã¡£
+				//åªå‰©ä¸‹ä¸€ä¸ªç»“ç‚¹äº†
+				//è¿™ç§æƒ…å†µéœ€è¦åˆ é™¤æ ¹ç»“ç‚¹å³å¯ï¼Œå°†å”¯ä¸€çš„ä¸€ä¸ªå­©å­ä½œä¸ºæ–°çš„æ ¹ç»“ç‚¹ã€‚
 				BTreeNode<KeyType, ValueType> * newRoot = (BTreeNode<KeyType, ValueType> *)(p->ptr[0]);
-				newRoot->parent = NULL;//Çå³ıĞÂµÄ¸ù½áµãµÄparent
+				newRoot->parent = NULL;//æ¸…é™¤æ–°çš„æ ¹ç»“ç‚¹çš„parent
 				delete this->root;
 				this->root = newRoot;
 				return true;
 			}
 		}
-		//É¾³ıÖ®ºó½áµãÊıÁ¿»á²»¹»(ĞèÒª½è»òÕßºÏ²¢)
-		//·Ç¸ù½áµã
+		//åˆ é™¤ä¹‹åç»“ç‚¹æ•°é‡ä¼šä¸å¤Ÿ(éœ€è¦å€Ÿæˆ–è€…åˆå¹¶)
+		//éæ ¹ç»“ç‚¹
 		BTreeNode<KeyType, ValueType> * pp = p->parent;
 		BTreeNode<KeyType, ValueType> * left_partner = NULL;
 		BTreeNode<KeyType, ValueType> * right_partner = NULL;
-		//Ê×ÏÈ»ñµÃµ±Ç°½áµãÔÚ¸¸½áµãÖĞµÄÎ»ÖÃ
+		//é¦–å…ˆè·å¾—å½“å‰ç»“ç‚¹åœ¨çˆ¶ç»“ç‚¹ä¸­çš„ä½ç½®
 		int pos = this->indexInParent(p);
-		//cout << "µ±Ç°½áµãÔÚ¸¸½áµãÖĞÎ»ÖÃÎª pos = "<<pos << endl;
-		//×¢Òâpos²»µÈÓÚ-1£¬ÒòÎªÉÏ±ßÒÑ¾­½«pÎª¸ù½áµãµÄÇé¿ö¸ø´¦ÀíµôÁË¡£
+		//cout << "å½“å‰ç»“ç‚¹åœ¨çˆ¶ç»“ç‚¹ä¸­ä½ç½®ä¸º pos = "<<pos << endl;
+		//æ³¨æ„posä¸ç­‰äº-1ï¼Œå› ä¸ºä¸Šè¾¹å·²ç»å°†pä¸ºæ ¹ç»“ç‚¹çš„æƒ…å†µç»™å¤„ç†æ‰äº†ã€‚
 		if (pos > 0) {
-			//pos!=0 ´æÔÚ×ó±ßĞÖµÜ
-			//ÄÃµ½×óĞÖµÜÖ¸Õë
+			//pos!=0 å­˜åœ¨å·¦è¾¹å…„å¼Ÿ
+			//æ‹¿åˆ°å·¦å…„å¼ŸæŒ‡é’ˆ
 			left_partner = (BTreeNode<KeyType, ValueType> *)(pp->ptr[pos - 1]);
 			if (left_partner->keyNumber >= this->innerNodeMinKey + 1) {
-				//×ó±ßĞÖµÜ¹»½è
-				//ÏÈÖ±½ÓÉ¾³ı
+				//å·¦è¾¹å…„å¼Ÿå¤Ÿå€Ÿ
+				//å…ˆç›´æ¥åˆ é™¤
 				this->del_inner_direct_index(p, ret);
-				/*	½è
-				@1:½«pµÄ¸¸½áµãÖĞ¶ÔÓ¦µÄkey×÷Îªp½áµãµÄÒ»¸ökey¼ÓÈë
-				@2:ÓÃ×óĞÖµÜµÄ×î´ókeyÌæ»»¸¸½áµãÖĞp¶ÔÓ¦µÄÄÇ¸ökey¡£
-				@3:½«×óĞÖµÜµÄ×îÓÒptr×÷Îªp½áµãµÄ×î×ó±ßµÄptr¼ÓÈë¡£
+				/*	å€Ÿ
+				@1:å°†pçš„çˆ¶ç»“ç‚¹ä¸­å¯¹åº”çš„keyä½œä¸ºpç»“ç‚¹çš„ä¸€ä¸ªkeyåŠ å…¥
+				@2:ç”¨å·¦å…„å¼Ÿçš„æœ€å¤§keyæ›¿æ¢çˆ¶ç»“ç‚¹ä¸­på¯¹åº”çš„é‚£ä¸ªkeyã€‚
+				@3:å°†å·¦å…„å¼Ÿçš„æœ€å³pträ½œä¸ºpç»“ç‚¹çš„æœ€å·¦è¾¹çš„ptråŠ å…¥ã€‚
 				*/
-				//¼´Ìí¼Ó¸¸½áµãp¶ÔÓ¦µÄkeyºÍ ×óĞÖµÜµÄ×î´ókey¶ÔÓ¦µÄptrµ½pÖĞ
-				//¸¸½áµãp¶ÔÓ¦µÄ key = pp->key[pos] ; ×óĞÖµÜµÄ×î´ókey = left_partner->key[left_partner->keyNumber] ;×îÓÒ ptr = left_partner->ptr[left_partner->keyNumber]¡£
-				//@1½«±¾½áµãËùÓĞÄÚÈİÏòÓÒÒÆ¶¯
+				//å³æ·»åŠ çˆ¶ç»“ç‚¹på¯¹åº”çš„keyå’Œ å·¦å…„å¼Ÿçš„æœ€å¤§keyå¯¹åº”çš„ptråˆ°pä¸­
+				//çˆ¶ç»“ç‚¹på¯¹åº”çš„ key = pp->key[pos] ; å·¦å…„å¼Ÿçš„æœ€å¤§key = left_partner->key[left_partner->keyNumber] ;æœ€å³ ptr = left_partner->ptr[left_partner->keyNumber]ã€‚
+				//@1å°†æœ¬ç»“ç‚¹æ‰€æœ‰å†…å®¹å‘å³ç§»åŠ¨
 				int i = p->keyNumber;
 				while (i >= 0) {
 					p->key[i + 1] = p->key[i];
 					p->ptr[i + 1] = p->ptr[i];
 					i--;
 				}
-				//Ìí¼Ó
+				//æ·»åŠ 
 				p->key[1] = pp->key[pos];
-				//¸üĞÂp½áµãµÄkeyÊıÁ¿
+				//æ›´æ–°pç»“ç‚¹çš„keyæ•°é‡
 				p->keyNumber++;
 
-				//@2:ÓÃ×óĞÖµÜµÄ×î´ókeyÌæ»»¸¸½áµãÖĞp¶ÔÓ¦µÄÄÇ¸ökey¡£
+				//@2:ç”¨å·¦å…„å¼Ÿçš„æœ€å¤§keyæ›¿æ¢çˆ¶ç»“ç‚¹ä¸­på¯¹åº”çš„é‚£ä¸ªkeyã€‚
 				pp->key[pos] = left_partner->key[left_partner->keyNumber];
 
-				//@3:½«×óĞÖµÜµÄ×îÓÒptr×÷Îªp½áµãµÄ×î×ó±ßµÄptr¼ÓÈë¡£
+				//@3:å°†å·¦å…„å¼Ÿçš„æœ€å³pträ½œä¸ºpç»“ç‚¹çš„æœ€å·¦è¾¹çš„ptråŠ å…¥ã€‚
 				p->ptr[0] = left_partner->ptr[left_partner->keyNumber];
-				((BTreeNode<KeyType, ValueType> *)(left_partner->ptr[left_partner->keyNumber]))->parent = p;//Î¬»¤ĞÂµÄ¸¸Ç×¹ØÏµ
+				((BTreeNode<KeyType, ValueType> *)(left_partner->ptr[left_partner->keyNumber]))->parent = p;//ç»´æŠ¤æ–°çš„çˆ¶äº²å…³ç³»
 
-																								 //¸üĞÂ×óĞÖµÜ½áµãµÄkeyÊıÁ¿
+																								 //æ›´æ–°å·¦å…„å¼Ÿç»“ç‚¹çš„keyæ•°é‡
 				left_partner->keyNumber--;
 
-				//¾­¹ı¹Û²ì£¬¸¸Ç×¹ØÏµÒÔ¼°¸üĞÂ£¬Ò¶×Ó½áµãµÄË³ĞòÔò²»ĞèÒª¹Ü£¬ÒòÎªÃ»ÓĞÓ°Ïìµ½£¨»­Í¼ºÜÖ±¹ÛÄÜ¿´³öÀ´£©¡£
+				//ç»è¿‡è§‚å¯Ÿï¼Œçˆ¶äº²å…³ç³»ä»¥åŠæ›´æ–°ï¼Œå¶å­ç»“ç‚¹çš„é¡ºåºåˆ™ä¸éœ€è¦ç®¡ï¼Œå› ä¸ºæ²¡æœ‰å½±å“åˆ°ï¼ˆç”»å›¾å¾ˆç›´è§‚èƒ½çœ‹å‡ºæ¥ï¼‰ã€‚
 
-				//½áÊø
+				//ç»“æŸ
 				return true;
 			}
-			//else {//×óĞÖµÜ²»¹»½è}
+			//else {//å·¦å…„å¼Ÿä¸å¤Ÿå€Ÿ}
 		}
 		else {
-			//pos = 0£¬¼´pÊÇµÚÒ»¸öº¢×Ó£¬Ã»ÓĞ×óĞÖµÜ¡£
+			//pos = 0ï¼Œå³pæ˜¯ç¬¬ä¸€ä¸ªå­©å­ï¼Œæ²¡æœ‰å·¦å…„å¼Ÿã€‚
 			left_partner = NULL;
 		}
-		//ÅĞ¶ÏÊÇ·ñÓĞÓÒĞÖµÜ
+		//åˆ¤æ–­æ˜¯å¦æœ‰å³å…„å¼Ÿ
 		if (pos < pp->keyNumber) {
-			//pos < pp->keyNumber ´æÔÚÓÒ±ßĞÖµÜ
-			//ÄÃµ½ÓÒĞÖµÜÖ¸Õë
+			//pos < pp->keyNumber å­˜åœ¨å³è¾¹å…„å¼Ÿ
+			//æ‹¿åˆ°å³å…„å¼ŸæŒ‡é’ˆ
 			right_partner = (BTreeNode<KeyType, ValueType> *)(pp->ptr[pos + 1]);
 			if (right_partner->keyNumber >= this->innerNodeMinKey + 1) {
-				//ÓÒĞÖµÜkeyµÄÊıÁ¿¹»½è
-				//ÏÈÖ±½ÓÉ¾³ı
+				//å³å…„å¼Ÿkeyçš„æ•°é‡å¤Ÿå€Ÿ
+				//å…ˆç›´æ¥åˆ é™¤
 				this->del_inner_direct_index(p, ret);
-				/*	½è
-				@1:½«pµÄ¸¸½áµãÖĞ¶ÔÓ¦µÄkeyÓÒ±ßÒ»¸ökey×÷Îªp½áµãµÄÒ»¸ökey¼ÓÈë
-				@2:ÓÃÓÒĞÖµÜµÄ×îĞ¡keyÌæ»»¸¸½áµãÖĞp¶ÔÓ¦µÄÄÇ¸ökeyµÄÓÒ±ßµÄkey¡£
-				@3:½«ÓÒĞÖµÜµÄ×î×óptr×÷Îªp½áµãµÄ×îÓÒ±ßµÄptr¼ÓÈë¡£
+				/*	å€Ÿ
+				@1:å°†pçš„çˆ¶ç»“ç‚¹ä¸­å¯¹åº”çš„keyå³è¾¹ä¸€ä¸ªkeyä½œä¸ºpç»“ç‚¹çš„ä¸€ä¸ªkeyåŠ å…¥
+				@2:ç”¨å³å…„å¼Ÿçš„æœ€å°keyæ›¿æ¢çˆ¶ç»“ç‚¹ä¸­på¯¹åº”çš„é‚£ä¸ªkeyçš„å³è¾¹çš„keyã€‚
+				@3:å°†å³å…„å¼Ÿçš„æœ€å·¦pträ½œä¸ºpç»“ç‚¹çš„æœ€å³è¾¹çš„ptråŠ å…¥ã€‚
 				*/
-				//¼´Ìí¼Ó¸¸½áµãp¶ÔÓ¦µÄkeyÓÒ±ßµÄkey ºÍ ÓÒĞÖµÜÖĞ×î×ó±ßµÄptrµ½pµÄ×îÓÒ±ß¡£
-				//¸¸½áµãp¶ÔÓ¦µÄ keyµÄÓÒ±ßkey = pp->key[pos+1] ; ÓÒĞÖµÜµÄ×îĞ¡ key = right_partner->key[1] ;×î×ó ptr = right_partner->ptr[0]¡£
-				//@1Ìí¼Ó
-				//¸üĞÂp½áµãµÄkeyÊıÁ¿
+				//å³æ·»åŠ çˆ¶ç»“ç‚¹på¯¹åº”çš„keyå³è¾¹çš„key å’Œ å³å…„å¼Ÿä¸­æœ€å·¦è¾¹çš„ptråˆ°pçš„æœ€å³è¾¹ã€‚
+				//çˆ¶ç»“ç‚¹på¯¹åº”çš„ keyçš„å³è¾¹key = pp->key[pos+1] ; å³å…„å¼Ÿçš„æœ€å° key = right_partner->key[1] ;æœ€å·¦ ptr = right_partner->ptr[0]ã€‚
+				//@1æ·»åŠ 
+				//æ›´æ–°pç»“ç‚¹çš„keyæ•°é‡
 				p->keyNumber++;
-				//keyNumberÒÑ¾­¼ÓÁË1£¬ËùÒÔkeyNumberÎ»ÖÃÒÑ¾­ÊÇ×îÓÒ±ßÎ»ÖÃ¡£
+				//keyNumberå·²ç»åŠ äº†1ï¼Œæ‰€ä»¥keyNumberä½ç½®å·²ç»æ˜¯æœ€å³è¾¹ä½ç½®ã€‚
 				p->key[p->keyNumber] = pp->key[pos + 1];
 
-				//@2:ÓÃÓÒĞÖµÜµÄ×îĞ¡keyÌæ»»¸¸½áµãÖĞp¶ÔÓ¦µÄÄÇ¸ökey¡£
+				//@2:ç”¨å³å…„å¼Ÿçš„æœ€å°keyæ›¿æ¢çˆ¶ç»“ç‚¹ä¸­på¯¹åº”çš„é‚£ä¸ªkeyã€‚
 				pp->key[pos + 1] = right_partner->key[1];
 
-				//@3:½«ÓÒĞÖµÜµÄ×î×óptr×÷Îªp½áµãµÄ×îÓÒ±ßµÄptr¼ÓÈë¡£
+				//@3:å°†å³å…„å¼Ÿçš„æœ€å·¦pträ½œä¸ºpç»“ç‚¹çš„æœ€å³è¾¹çš„ptråŠ å…¥ã€‚
 				p->ptr[p->keyNumber] = right_partner->ptr[0];
 
-				((BTreeNode<KeyType, ValueType> *)(right_partner->ptr[0]))->parent = p;//Î¬»¤ĞÂµÄ¸¸Ç×¹ØÏµ
+				((BTreeNode<KeyType, ValueType> *)(right_partner->ptr[0]))->parent = p;//ç»´æŠ¤æ–°çš„çˆ¶äº²å…³ç³»
 
-																			//½«ÓÒĞÖµÜ½áµãµÄÊ£ÓàËùÓĞkeyºÍptr×óÒÆ£¨ÒòÎª×îĞ¡µÄÒ»¸öÒÑ¾­Ã»ÁË£©
-																			//×¢ÒâËäÈ»µÚÒ»¸ö½áµãkey²»ĞèÒª×óÒÆ£¬µ«ÊÇ»¹ÊÇ´Ói=1¿ªÊ¼£¬ÒòÎªÕâÑù¿ÉÒÔË³±ã°Ñptr[0]×óÒÆ
+																			//å°†å³å…„å¼Ÿç»“ç‚¹çš„å‰©ä½™æ‰€æœ‰keyå’Œptrå·¦ç§»ï¼ˆå› ä¸ºæœ€å°çš„ä¸€ä¸ªå·²ç»æ²¡äº†ï¼‰
+																			//æ³¨æ„è™½ç„¶ç¬¬ä¸€ä¸ªç»“ç‚¹keyä¸éœ€è¦å·¦ç§»ï¼Œä½†æ˜¯è¿˜æ˜¯ä»i=1å¼€å§‹ï¼Œå› ä¸ºè¿™æ ·å¯ä»¥é¡ºä¾¿æŠŠptr[0]å·¦ç§»
 				for (int i = 1; i <= right_partner->keyNumber; i++) {
 					right_partner->key[i - 1] = right_partner->key[i];
 					right_partner->ptr[i - 1] = right_partner->ptr[i];
 				}
-				//¸üĞÂÓÒĞÖµÜ½áµãµÄkeyÊıÁ¿
+				//æ›´æ–°å³å…„å¼Ÿç»“ç‚¹çš„keyæ•°é‡
 				right_partner->keyNumber--;
 
-				//¾­¹ı¹Û²ì£¬¸¸Ç×¹ØÏµÒÔ¼°¸üĞÂ£¬Ò¶×Ó½áµãµÄË³ĞòÔò²»ĞèÒª¹Ü£¬ÒòÎªÃ»ÓĞÓ°Ïìµ½£¨»­Í¼ºÜÖ±¹ÛÄÜ¿´³öÀ´£©¡£
+				//ç»è¿‡è§‚å¯Ÿï¼Œçˆ¶äº²å…³ç³»ä»¥åŠæ›´æ–°ï¼Œå¶å­ç»“ç‚¹çš„é¡ºåºåˆ™ä¸éœ€è¦ç®¡ï¼Œå› ä¸ºæ²¡æœ‰å½±å“åˆ°ï¼ˆç”»å›¾å¾ˆç›´è§‚èƒ½çœ‹å‡ºæ¥ï¼‰ã€‚
 
-				//½áÊø
+				//ç»“æŸ
 				return true;
 			}
-			//else {//ÓÒĞÖµÜ²»¹»½è}
+			//else {//å³å…„å¼Ÿä¸å¤Ÿå€Ÿ}
 		}
 		else {
-			//pos = pp->keyNumber£¬¼´pÊÇ×îºóÒ»¸öº¢×Ó£¬Ã»ÓĞÓÒĞÖµÜ¡£
+			//pos = pp->keyNumberï¼Œå³pæ˜¯æœ€åä¸€ä¸ªå­©å­ï¼Œæ²¡æœ‰å³å…„å¼Ÿã€‚
 			right_partner = NULL;
 		}
 
-		//ÓĞÒ»¸öÇ×ĞÖµÜ
-		//¿ªÊ¼É¾³ıÒÔ¼°ºÏ²¢
+		//æœ‰ä¸€ä¸ªäº²å…„å¼Ÿ
+		//å¼€å§‹åˆ é™¤ä»¥åŠåˆå¹¶
 		if (left_partner) {
-			//cout<< "ºÏ²¢×óĞÖµÜ½áµã" <<endl;
-			//ºÏ²¢×óĞÖµÜ
-			//½«±¾½áµãÉ¾³ıÖ¸¶¨keyºóÊ£ÓàµÄkeyÈ«²¿¸´ÖÆµ½×ó½áµãÖĞ¡£
-			//±¾½áµãÖĞkey±È×ó½áµãÖĞËùÓĞkey¶¼´ó£¬ËùÒÔ¿ÉÒÔË³Ğò¸´ÖÆ¹ıÈ¥¡£
+			//cout<< "åˆå¹¶å·¦å…„å¼Ÿç»“ç‚¹" <<endl;
+			//åˆå¹¶å·¦å…„å¼Ÿ
+			//å°†æœ¬ç»“ç‚¹åˆ é™¤æŒ‡å®škeyåå‰©ä½™çš„keyå…¨éƒ¨å¤åˆ¶åˆ°å·¦ç»“ç‚¹ä¸­ã€‚
+			//æœ¬ç»“ç‚¹ä¸­keyæ¯”å·¦ç»“ç‚¹ä¸­æ‰€æœ‰keyéƒ½å¤§ï¼Œæ‰€ä»¥å¯ä»¥é¡ºåºå¤åˆ¶è¿‡å»ã€‚
 
-			//É¾³ı£¨Ö±½ÓÉ¾³ı£©
+			//åˆ é™¤ï¼ˆç›´æ¥åˆ é™¤ï¼‰
 			this->del_inner_direct_index(p, ret);
 
-			//¸´ÖÆ±¾½áµãÖĞkey/ptrµ½×ó±ß½áµãÖĞ¡£
-			//ÏÈ½«±¾½áµã¶ÔÓ¦µ½¸¸½áµãÖĞÄÇ¸ö¿ÉÒÔ·Åµ½±¾½áµãµÄµÚ0¸öÎ»ÖÃ£¬ÕâÑù¸´ÖÆµÄÊ±ºò¿ÉÒÔÍ³Ò»µã£¨±¾Éí¸¸½áµãÖĞÄÇ¸ökey¾ÍÊÇÒªÊ×ÏÈ·Åµ½×óĞÖµÜÖĞ×îÓÒ±ß£¬½ÓÏÂÀ´²ÅÊÇ·Å±¾½áµãµÄÊ£ÓàkeyµÄ£©¡£
+			//å¤åˆ¶æœ¬ç»“ç‚¹ä¸­key/ptråˆ°å·¦è¾¹ç»“ç‚¹ä¸­ã€‚
+			//å…ˆå°†æœ¬ç»“ç‚¹å¯¹åº”åˆ°çˆ¶ç»“ç‚¹ä¸­é‚£ä¸ªå¯ä»¥æ”¾åˆ°æœ¬ç»“ç‚¹çš„ç¬¬0ä¸ªä½ç½®ï¼Œè¿™æ ·å¤åˆ¶çš„æ—¶å€™å¯ä»¥ç»Ÿä¸€ç‚¹ï¼ˆæœ¬èº«çˆ¶ç»“ç‚¹ä¸­é‚£ä¸ªkeyå°±æ˜¯è¦é¦–å…ˆæ”¾åˆ°å·¦å…„å¼Ÿä¸­æœ€å³è¾¹ï¼Œæ¥ä¸‹æ¥æ‰æ˜¯æ”¾æœ¬ç»“ç‚¹çš„å‰©ä½™keyçš„ï¼‰ã€‚
 			p->key[0] = pp->key[pos];
 			int j = left_partner->keyNumber + 1;
 			for (int i = 0; i <= p->keyNumber; i++, j++) {
 				left_partner->key[j] = p->key[i];
 				left_partner->ptr[j] = p->ptr[i];
-				((BTreeNode<KeyType, ValueType> *)(left_partner->ptr[j]))->parent = left_partner;//¸üĞÂ¸¸Ç×¹ØÏµ
+				((BTreeNode<KeyType, ValueType> *)(left_partner->ptr[j]))->parent = left_partner;//æ›´æ–°çˆ¶äº²å…³ç³»
 			}
-			//¸üĞÂ×ó½áµãµÄkeyµÄÊıÁ¿(×¢Òâ»¹ÓĞÒ»¸ö0ºÅÎ»ÖÃ£¬ËùÒÔĞèÒª¼Ó1£¬0ºÅÎ»ÖÃÊµÖÊÊÇ´Ó¸¸½áµãÖĞÄÃÀ´µÄ)¡£
+			//æ›´æ–°å·¦ç»“ç‚¹çš„keyçš„æ•°é‡(æ³¨æ„è¿˜æœ‰ä¸€ä¸ª0å·ä½ç½®ï¼Œæ‰€ä»¥éœ€è¦åŠ 1ï¼Œ0å·ä½ç½®å®è´¨æ˜¯ä»çˆ¶ç»“ç‚¹ä¸­æ‹¿æ¥çš„)ã€‚
 			left_partner->keyNumber += (p->keyNumber + 1);
 
-			//É¾³ı¸¸½áµãÖĞµÄkey=p->key[0]µÄÄÇ¸ökey£¬Ò²¿ÉÒÔËµÊÇ pp->key[pos]¡£
+			//åˆ é™¤çˆ¶ç»“ç‚¹ä¸­çš„key=p->key[0]çš„é‚£ä¸ªkeyï¼Œä¹Ÿå¯ä»¥è¯´æ˜¯ pp->key[pos]ã€‚
 			this->del_inner_node(pp, pp->key[pos]);
 
-			//ÊÍ·Åp½áµã¿Õ¼ä
+			//é‡Šæ”¾pç»“ç‚¹ç©ºé—´
 			delete p;
 
 			return true;
 		}
 		else {
-			//ºÏ²¢ÓÒĞÖµÜ
-			//cout << "ºÏ²¢ÓÒĞÖµÜ½áµã" << endl;
-			//½«ÓÒĞÖµÜ½áµãÈ«²¿key¸´ÖÆµ½µ±Ç°½áµãÖĞ¡£
-			//ÓÒĞÖµÜ½áµãÖĞkey±Èµ±Ç°½áµãÖĞËùÓĞkey¶¼´ó£¬ËùÒÔ¿ÉÒÔË³Ğò¸´ÖÆ¡£
+			//åˆå¹¶å³å…„å¼Ÿ
+			//cout << "åˆå¹¶å³å…„å¼Ÿç»“ç‚¹" << endl;
+			//å°†å³å…„å¼Ÿç»“ç‚¹å…¨éƒ¨keyå¤åˆ¶åˆ°å½“å‰ç»“ç‚¹ä¸­ã€‚
+			//å³å…„å¼Ÿç»“ç‚¹ä¸­keyæ¯”å½“å‰ç»“ç‚¹ä¸­æ‰€æœ‰keyéƒ½å¤§ï¼Œæ‰€ä»¥å¯ä»¥é¡ºåºå¤åˆ¶ã€‚
 
-			//É¾³ı£¨Ö±½ÓÉ¾³ı£©
+			//åˆ é™¤ï¼ˆç›´æ¥åˆ é™¤ï¼‰
 			this->del_inner_direct_index(p, ret);
 
-			//¸´ÖÆÓÒĞÖµÜ½áµãÖĞkeyµ½µ±Ç°±ß½áµãÖĞ(°üÀ¨¸¸½áµãÖĞÒ»¸ö)¡£
+			//å¤åˆ¶å³å…„å¼Ÿç»“ç‚¹ä¸­keyåˆ°å½“å‰è¾¹ç»“ç‚¹ä¸­(åŒ…æ‹¬çˆ¶ç»“ç‚¹ä¸­ä¸€ä¸ª)ã€‚
 			right_partner->key[0] = pp->key[pos + 1];
 			int j = p->keyNumber + 1;
 			for (int i = 0; i <= right_partner->keyNumber; i++, j++) {
@@ -947,13 +946,13 @@ bool BTree<KeyType, ValueType>::del_inner_node(BTreeNode<KeyType, ValueType> * p
 				p->ptr[j] = right_partner->ptr[i];
 				((BTreeNode<KeyType, ValueType> *)(p->ptr[j]))->parent = p;
 			}
-			//¸üĞÂµ±Ç°½áµãµÄkeyµÄÊıÁ¿¡£
+			//æ›´æ–°å½“å‰ç»“ç‚¹çš„keyçš„æ•°é‡ã€‚
 			p->keyNumber += (right_partner->keyNumber + 1);
 
-			//É¾³ı¸¸½áµãÖĞµÄkey=right_partner->key[0]µÄÄÇ¸ökey£¬Ò²¿ÉÒÔËµÊÇ pp->key[pos+1]¡£
+			//åˆ é™¤çˆ¶ç»“ç‚¹ä¸­çš„key=right_partner->key[0]çš„é‚£ä¸ªkeyï¼Œä¹Ÿå¯ä»¥è¯´æ˜¯ pp->key[pos+1]ã€‚
 			this->del_inner_node(pp, pp->key[pos + 1]);
 
-			//ÊÍ·Åp½áµã¿Õ¼ä
+			//é‡Šæ”¾pç»“ç‚¹ç©ºé—´
 			delete right_partner;
 
 			return true;
@@ -962,9 +961,9 @@ bool BTree<KeyType, ValueType>::del_inner_node(BTreeNode<KeyType, ValueType> * p
 	}
 }
 
-//ÔÚÖ¸¶¨½áµãÖĞÖÖ²éÕÒ¹Ø¼ü×ÖkeyµÄÎ»ÖÃ¡£
-//	·µ»ØpÔÚÆä¸¸Ç×ÖĞÎ»ÖÃi;
-//	ÈôpÎŞ¸¸Ç×£¬·µ»Ø-1.
+//åœ¨æŒ‡å®šç»“ç‚¹ä¸­ç§æŸ¥æ‰¾å…³é”®å­—keyçš„ä½ç½®ã€‚
+//	è¿”å›påœ¨å…¶çˆ¶äº²ä¸­ä½ç½®i;
+//	è‹¥pæ— çˆ¶äº²ï¼Œè¿”å›-1.
 template <class KeyType, class ValueType>
 int BTree<KeyType, ValueType>::indexInParent(BTreeNode<KeyType, ValueType> * p) {
 	if (p->parent == NULL)
@@ -975,30 +974,30 @@ int BTree<KeyType, ValueType>::indexInParent(BTreeNode<KeyType, ValueType> * p) 
 	while (i > 0 && p->key[1] < pp->key[i]) {
 		i--;
 	}
-	//i==0Ò²¶Ô£¬i==0ÊÇ×î×ó±ßº¢×ÓµÄÇé¿ö¡£
+	//i==0ä¹Ÿå¯¹ï¼Œi==0æ˜¯æœ€å·¦è¾¹å­©å­çš„æƒ…å†µã€‚
 	return i;
 }
 
 
 
 /*
-@desc:	É¾³ıÖ¸¶¨½áµãÖĞµÄÖ¸¶¨indexµÄkey¡£
-@return:	É¾³ı³É¹¦·µ»Øtrue¡£
-·ñÔò·µ»Øfalse¡£
+@desc:	åˆ é™¤æŒ‡å®šç»“ç‚¹ä¸­çš„æŒ‡å®šindexçš„keyã€‚
+@return:	åˆ é™¤æˆåŠŸè¿”å›trueã€‚
+å¦åˆ™è¿”å›falseã€‚
 */
 template <class KeyType, class ValueType>
 bool BTree<KeyType, ValueType>::del_direct_index(BTreeNode<KeyType, ValueType> * p, int index) {
 	int delKey = p->key[index];
-	//Èç¹ûÕÒµ½ÁË£¬ÔòpËùÖ¸ÏòµÄ¼´ÎªkeyËùÔÚ½áµã£¬retÔòÊÇkeyËùÔÚÎ»ÖÃ¡£
-	//Ñ­»·½«[ret+1 --> keyNumber]Î»ÖÃµÄkeyºÍvalueÇ°ÒÆ¡£
+	//å¦‚æœæ‰¾åˆ°äº†ï¼Œåˆ™pæ‰€æŒ‡å‘çš„å³ä¸ºkeyæ‰€åœ¨ç»“ç‚¹ï¼Œretåˆ™æ˜¯keyæ‰€åœ¨ä½ç½®ã€‚
+	//å¾ªç¯å°†[ret+1 --> keyNumber]ä½ç½®çš„keyå’Œvalueå‰ç§»ã€‚
 	for (int i = index + 1; i <= p->keyNumber; i++) {
 		p->key[i - 1] = p->key[i];
 		p->value[i - 1] = p->value[i];
 		//p->ptr[i - 1] = p->ptr[i];
 	}
 	p->keyNumber--;
-	//Èç¹ûÉ¾³ıµÄÊÇµÚÒ»¸öÎ»ÖÃ£¬ÔòÓĞ¿ÉÄÜĞèÒªÌæ»»¸¸½áµã(key-->p->ptr[ret])¡£
-	//·ÇÒ¶×Ó½áµã²»»á³öÏÖĞèÒª¸üĞÂ¸¸½áµãµÄÇé¿ö(×¢Òâ´Ë´¦ÅĞ¶ÏÊÇÎªÁË±£ÏÕ£¬ÊµÖÊ³ÌĞòÖĞÄÚ²¿½áµã²»»áµ÷ÓÃÕâ¸ö·½·¨)¡£
+	//å¦‚æœåˆ é™¤çš„æ˜¯ç¬¬ä¸€ä¸ªä½ç½®ï¼Œåˆ™æœ‰å¯èƒ½éœ€è¦æ›¿æ¢çˆ¶ç»“ç‚¹(key-->p->ptr[ret])ã€‚
+	//éå¶å­ç»“ç‚¹ä¸ä¼šå‡ºç°éœ€è¦æ›´æ–°çˆ¶ç»“ç‚¹çš„æƒ…å†µ(æ³¨æ„æ­¤å¤„åˆ¤æ–­æ˜¯ä¸ºäº†ä¿é™©ï¼Œå®è´¨ç¨‹åºä¸­å†…éƒ¨ç»“ç‚¹ä¸ä¼šè°ƒç”¨è¿™ä¸ªæ–¹æ³•)ã€‚
 	if (p->isLeaf && index == 1) {
 		this->replace(p->parent, delKey, p->key[1]);
 	}
@@ -1006,15 +1005,15 @@ bool BTree<KeyType, ValueType>::del_direct_index(BTreeNode<KeyType, ValueType> *
 }
 
 /*
-	@desc:	É¾³ıÖ¸¶¨ÄÚ²¿½áµãÖĞµÄÖ¸¶¨indexµÄkey¡£
-	@return:	É¾³ı³É¹¦·µ»Øtrue¡£
-	·ñÔò·µ»Øfalse¡£
+	@desc:	åˆ é™¤æŒ‡å®šå†…éƒ¨ç»“ç‚¹ä¸­çš„æŒ‡å®šindexçš„keyã€‚
+	@return:	åˆ é™¤æˆåŠŸè¿”å›trueã€‚
+	å¦åˆ™è¿”å›falseã€‚
 */
 template <class KeyType, class ValueType>
 bool BTree<KeyType, ValueType>::del_inner_direct_index(BTreeNode<KeyType, ValueType> * p, int index) {
 	int delKey = p->key[index];
-	//Èç¹ûÕÒµ½ÁË£¬ÔòpËùÖ¸ÏòµÄ¼´ÎªkeyËùÔÚ½áµã£¬retÔòÊÇkeyËùÔÚÎ»ÖÃ¡£
-	//Ñ­»·½«[ret+1 --> keyNumber]Î»ÖÃµÄkeyºÍptrÇ°ÒÆ¡£
+	//å¦‚æœæ‰¾åˆ°äº†ï¼Œåˆ™pæ‰€æŒ‡å‘çš„å³ä¸ºkeyæ‰€åœ¨ç»“ç‚¹ï¼Œretåˆ™æ˜¯keyæ‰€åœ¨ä½ç½®ã€‚
+	//å¾ªç¯å°†[ret+1 --> keyNumber]ä½ç½®çš„keyå’Œptrå‰ç§»ã€‚
 	for (int i = index + 1; i <= p->keyNumber; i++) {
 		p->key[i - 1] = p->key[i];
 		p->ptr[i - 1] = p->ptr[i];
@@ -1024,18 +1023,18 @@ bool BTree<KeyType, ValueType>::del_inner_direct_index(BTreeNode<KeyType, ValueT
 }
 
 /**
-@desc:´Óp½áµãÒÔÇ°Ò»Ö±ÏòÉÏÕÒµ½¸ù½áµã£¬Ö±µ½ÕÒµ½oldKey²¢ÇÒÌæ»»ÎªnewKey£¬»òÖ±µ½¸ù½áµãÕÒ²»µ½Ò²½áÊø¡£
+@desc:ä»pç»“ç‚¹ä»¥å‰ä¸€ç›´å‘ä¸Šæ‰¾åˆ°æ ¹ç»“ç‚¹ï¼Œç›´åˆ°æ‰¾åˆ°oldKeyå¹¶ä¸”æ›¿æ¢ä¸ºnewKeyï¼Œæˆ–ç›´åˆ°æ ¹ç»“ç‚¹æ‰¾ä¸åˆ°ä¹Ÿç»“æŸã€‚
 */
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::replace(BTreeNode<KeyType, ValueType> * p, KeyType oldKey, KeyType newKey) {
 	int hasFind = 0;
-	//Èç¹û»¹Ã»ÕÒµ½ ²¢ÇÒ Ã»µ½¸ù½áµã¡£
+	//å¦‚æœè¿˜æ²¡æ‰¾åˆ° å¹¶ä¸” æ²¡åˆ°æ ¹ç»“ç‚¹ã€‚
 	while (!hasFind && p) {
-		//²éÕÒºÍÌæ»»
+		//æŸ¥æ‰¾å’Œæ›¿æ¢
 		for (int i = 1; i <= p->keyNumber; i++) {
 			if (p->key[i] == oldKey) {
-				p->key[i] = newKey;//Ìæ»»
-				hasFind = 1;//±ê¼ÇÎªÕÒµ½
+				p->key[i] = newKey;//æ›¿æ¢
+				hasFind = 1;//æ ‡è®°ä¸ºæ‰¾åˆ°
 				break;
 			}
 		}
@@ -1045,39 +1044,39 @@ void BTree<KeyType, ValueType>::replace(BTreeNode<KeyType, ValueType> * p, KeyTy
 }
 
 /**
-@desc:´òÓ¡BÊ÷(·½±ãµ÷ÊÔ)
-ÎªÁË¿´ÆğÀ´·½±ã£¬ĞèÒª²ã´Î±éÀú¡£
+@desc:æ‰“å°Bæ ‘(æ–¹ä¾¿è°ƒè¯•)
+ä¸ºäº†çœ‹èµ·æ¥æ–¹ä¾¿ï¼Œéœ€è¦å±‚æ¬¡éå†ã€‚
 */
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::print() {
 	if (this->root == NULL) {
-		cout << "BTree is empty£¡" << endl;
+		cout << "BTree is emptyï¼" << endl;
 		return;
 	}
 
-	cout << "BTreeÊä³ö£º" << endl;
-	//¶¨ÒåÒ»¸ö¶ÓÁĞ
+	cout << "BTreeè¾“å‡ºï¼š" << endl;
+	//å®šä¹‰ä¸€ä¸ªé˜Ÿåˆ—
 	queue<BTreeNode<KeyType, ValueType> *> pnodeQueue;
 	queue<int> keyNumberQueue;
 
-	//¸ù½áµã½ø¶Ó
+	//æ ¹ç»“ç‚¹è¿›é˜Ÿ
 	pnodeQueue.push(this->root);
 
-	//nodeÁÙÊ±ÊıÁ¿(ÓÃÓÚ´òÓ¡BTreeµÄ½á¹¹£¬ÕâÑù´òÓ¡»á±È½ÏÖ±¹Û)
-	int nodeNumber = 0;//¼ÇÂ¼µ±Ç°±¾²ã±éÀúÊı
-	int nodeNumbers = 1;//¼ÇÂ¼±¾²ã½áµã×ÜÊı
-	int newNodeNumbers = 0;//¼ÇÂ¼ÏÂÒ»²ã½áµã×ÜÊı
+	//nodeä¸´æ—¶æ•°é‡(ç”¨äºæ‰“å°BTreeçš„ç»“æ„ï¼Œè¿™æ ·æ‰“å°ä¼šæ¯”è¾ƒç›´è§‚)
+	int nodeNumber = 0;//è®°å½•å½“å‰æœ¬å±‚éå†æ•°
+	int nodeNumbers = 1;//è®°å½•æœ¬å±‚ç»“ç‚¹æ€»æ•°
+	int newNodeNumbers = 0;//è®°å½•ä¸‹ä¸€å±‚ç»“ç‚¹æ€»æ•°
 
-						   //¿ªÊ¼²ã´Î±éÀú
+						   //å¼€å§‹å±‚æ¬¡éå†
 	while (pnodeQueue.size()) {
-		//»ñÈ¡¶ÓÊ×½áµã£¬²¢ÇÒ³ö¶Ó¡£
+		//è·å–é˜Ÿé¦–ç»“ç‚¹ï¼Œå¹¶ä¸”å‡ºé˜Ÿã€‚
 		BTreeNode<KeyType, ValueType> * pNode = pnodeQueue.front();
 		pnodeQueue.pop();
 		if (pNode) {
-			//´òÓ¡¸Ã½áµãµÄkeys
+			//æ‰“å°è¯¥ç»“ç‚¹çš„keys
 			this->printNode(pNode);
 			if (!pNode->isLeaf) {
-				//½«¸Ã½áµãµÄËùÓĞº¢×Ó½áµãÖ¸ÕëÈë¶Ó¡£
+				//å°†è¯¥ç»“ç‚¹çš„æ‰€æœ‰å­©å­ç»“ç‚¹æŒ‡é’ˆå…¥é˜Ÿã€‚
 				for (int i = 0; i <= pNode->keyNumber; i++) {
 					if (pNode->ptr[i])
 						pnodeQueue.push((BTreeNode<KeyType, ValueType> *)(pNode->ptr[i]));
@@ -1090,7 +1089,7 @@ void BTree<KeyType, ValueType>::print() {
 				keyNumberQueue.push(newNodeNumbers);
 				newNodeNumbers = 0;
 				if (!keyNumberQueue.empty()) {
-					//ÖØĞÂ¼ÆÊı
+					//é‡æ–°è®¡æ•°
 					nodeNumber = 0;
 					nodeNumbers = keyNumberQueue.front();
 					keyNumberQueue.pop();
@@ -1098,15 +1097,15 @@ void BTree<KeyType, ValueType>::print() {
 			}
 		}
 	}
-	cout << "BTreeÊä³öÍê±Ï£¡" << endl;
+	cout << "BTreeè¾“å‡ºå®Œæ¯•ï¼" << endl;
 }
 
-//´òÓ¡Ò»¸ö½áµãµÄkey
+//æ‰“å°ä¸€ä¸ªç»“ç‚¹çš„key
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::printNode(BTreeNode<KeyType, ValueType> * pNode) {
 	int isFirst = 1;
 	cout << "(";
-	//±éÀú¸Ã½áµã
+	//éå†è¯¥ç»“ç‚¹
 	for (int i = 1; i <= pNode->keyNumber; i++) {
 		if (isFirst) {
 			cout << pNode->key[i];
@@ -1120,7 +1119,7 @@ void BTree<KeyType, ValueType>::printNode(BTreeNode<KeyType, ValueType> * pNode)
 	cout << ") ";
 }
 
-//·µ»ØÊ÷µÄµÚÒ»¸öÒ¶×Ó½áµã¡£
+//è¿”å›æ ‘çš„ç¬¬ä¸€ä¸ªå¶å­ç»“ç‚¹ã€‚
 template <class KeyType, class ValueType>
 BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::firstLeafNode() {
 	BTreeNode<KeyType, ValueType> * p = this->root;
@@ -1132,17 +1131,17 @@ BTreeNode<KeyType, ValueType> * BTree<KeyType, ValueType>::firstLeafNode() {
 
 template <class KeyType, class ValueType>
 void BTree<KeyType, ValueType>::printAllLeaf() {
-	cout << "´òÓ¡Ò¶×Ó½áµã£º" << endl;
+	cout << "æ‰“å°å¶å­ç»“ç‚¹ï¼š" << endl;
 	BTreeNode<KeyType, ValueType> * p = this->firstLeafNode();
 	while (p) {
 		cout << "(";
-		//±éÀúp
+		//éå†p
 		for (int i = 1; i <= p->keyNumber; i++) {
 			cout << p->key[i] << "=" << p->value[i] << " ";
 		}
 		cout << ") ";
 		p = (BTreeNode<KeyType, ValueType> *)(p->ptr[0]);
 	}
-	cout << endl << "´òÓ¡Ò¶×Ó½áµã½áÊø£¡" << endl;
+	cout << endl << "æ‰“å°å¶å­ç»“ç‚¹ç»“æŸï¼" << endl;
 }
 
