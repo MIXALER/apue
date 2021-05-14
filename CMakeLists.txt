@@ -3,5 +3,4 @@ project(learn_os)
 
 set(CMAKE_CXX_STANDARD 11)
 
-
-add_executable(db db.cpp)
+add_executable(sys_call test.cpp)
