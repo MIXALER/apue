@@ -55,35 +55,42 @@ void *thread_routine(void *arg)
 {
     struct timespec abstime;
     int timeout;
+    printf("thread 0x%0x is starting\n", (int) pthread_self());
     threadpool_t *pool = (threadpool_t *) arg;
     while (1)
     {
         timeout = 0;
         condition_lock(&pool->ready);
         pool->idle++;
+        //等待队列有任务到来或者线程池销毁的通知
         while (pool->first == NULL && !pool->quit)
         {
+            printf("thread 0x%0x is waiting\n", (int) pthread_self());
             clock_gettime(CLOCK_REALTIME, &abstime);
             abstime.tv_sec += 2;
             int status = condition_timewait(&pool->ready, &abstime);
             if (status == ETIMEDOUT)
             {
+                printf("thread 0x%0x is wait timed out\n", (int) pthread_self());
                 timeout = 1;
                 break;
             }
 
         }
+        //等待条件，处于工作状态
         pool->idle--;
 
         if (pool->first != NULL)
         {
             task_t *t = pool->first;
             pool->first = t->next;
+            //需要先解锁，以便添加新任务。其他消费者线程能够进入等待任务。
             condition_unlock(&pool->ready);
             t->run(t->arg);
             free(t);
             condition_lock(&pool->ready);
         }
+        //等待线程池销毁的通知
         if (pool->quit && pool->first == NULL)
         {
             pool->counter--;
@@ -92,6 +99,7 @@ void *thread_routine(void *arg)
                 condition_signal(&pool->ready);
             }
             condition_unlock(&pool->ready);
+            //跳出循环之前要记得解锁
             break;
         }
 
@@ -99,14 +107,17 @@ void *thread_routine(void *arg)
         {
             pool->counter--;
             condition_unlock(&pool->ready);
+            //跳出循环之前要记得解锁
             break;
         }
         condition_unlock(&pool->ready);
     }
 
+    printf("thread 0x%0x is exiting\n", (int) pthread_self());
     return NULL;
 }
 
+//初始化
 void threadpool_init(threadpool_t *pool, int threads)
 {
     condition_init(&pool->ready);
@@ -118,20 +129,23 @@ void threadpool_init(threadpool_t *pool, int threads)
     pool->quit = 0;
 }
 
+//加任务
 void threadpool_add_task(threadpool_t *pool, void *(*run)(void *arg), void *arg)
 {
-    task_t *new_task = (task_t *) malloc(sizeof(task_t));
-    new_task->run = run;
-    new_task->arg = arg;
-    new_task->next = NULL;
+    task_t *newstask = (task_t *) malloc(sizeof(task_t));
+    newstask->run = run;
+    newstask->arg = arg;
+    newstask->next = NULL;
 
     condition_lock(&pool->ready);
+    //将任务添加到对列中
     if (pool->first == NULL)
     {
-        pool->first = new_task;
+        pool->first = newstask;
     } else
-        pool->last->next = new_task;
-    pool->last = new_task;
+        pool->last->next = newstask;
+    pool->last = newstask;
+    //如果有等待线程，则唤醒其中一个
     if (pool->idle > 0)
     {
         condition_signal(&pool->ready);
@@ -144,7 +158,8 @@ void threadpool_add_task(threadpool_t *pool, void *(*run)(void *arg), void *arg)
     condition_unlock(&pool->ready);
 }
 
-void threadpool_destroy(threadpool_t *pool)
+//销毁线程池
+void threadpool_destory(threadpool_t *pool)
 {
 
     if (pool->quit)

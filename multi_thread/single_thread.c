@@ -70,9 +70,9 @@ int main(int argc, char *argv[])
                         c[i][j] += a[i][k] * b[k][j];
             clock_t finish = clock();
             total_time += (double) (finish - start);
-            print((const int**)a, size);
-            print((const int**)b, size);
-            print((const int**)c, size);
+            print((const int **) a, size);
+            print((const int **) b, size);
+            print((const int **) c, size);
         }
 
         for (int i = 0; i < size; i++)
@@ -86,7 +86,8 @@ int main(int argc, char *argv[])
         FREE(c);
         FILE *fd;
         fd = fopen("./single_thread_log.txt", "a");
-        fprintf(fd, "Matrix Size = %d  -----Average Runtime of %d times = %.10f\n", size ,n_times, (double) (total_time / n_times) / CLOCKS_PER_SEC);
+        fprintf(fd, "Matrix Size = %d  -----Average Runtime of %d times = %.10f\n", size, n_times,
+                (double) (total_time / n_times) / CLOCKS_PER_SEC);
         fclose(fd);
         total_time = 0;
     }
